@@ -1,35 +1,33 @@
-# Web Студия для Людей :)
+# Web Studio for People :)
 
-Добро пожаловать в репозиторий инструмента vve.digital
+Welcome to the vve.digital tool repository
 
+#Studio
 
+A platform for quickly ordering your product from trusted developers
 
-# Студия
+## Target audience
 
-Платформа для быстрого заказа it продукта у проверенных разработчиков
+Entrepreneur who wants to start a project or bring an existing business online
 
+## Issues
 
-## Целевая аудитория
+Ordering development services is a lottery
+Customer's contact with developer is like a robot
+Customers for once
 
-Человек, предприниматель желающий реализовать свой проект или перенести существующий бизнес в онлайн
+## Value Proposition
 
+Needs fine-tuning of project with pre-prepared checkpoints
+Constant contact and communication with the developer
+Smart solution for further collaboration
 
-## Проблемы
+## Key tools and features
 
-Заказ услуг разработки является лотереей
-Контакт заказчика с разработчиком как с роботом
-Клиенты на 1 раз
+Easy creation and monitoring of the project in a private office with a summary of all results and handy Q&A, information gathering and urgent meeting functions
 
-## Ценностное предложение
+Ongoing contact between customer and developer via built-in chat
 
-Нужно точное регулирование проекта с заготовленными чекпоинтами
-Постоянный контакт и общение с разработчиком
-Умное решение для дальнейшего сотрудничества
+The platform will be created to comfortably manage a project, but not just one, but many.
 
-## Ключевые средства и функции
-
-Удобное создание и наблюдение за проектом в личном кабинете со сводкой всех результатов и удобных функций вопрос-ответа, сбора информации и срочного meeting'а
-
-Постоянный контакт заказчика и разработчика посредством встроенного чата
-
-Платформа будет создана для комфортного ведения проекта, но не только одного, а множества.
+Translated with www.DeepL.com/Translator (free version)
