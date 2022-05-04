@@ -38,6 +38,3 @@ async def change_password(user: UserCreate, passwords: ChangePassword):
             raise BusinessException(status_code=999, detail="Wrong confirm password!")
     else:
             raise BusinessException(status_code=999, detail="Wrong password!")
-
-
-
