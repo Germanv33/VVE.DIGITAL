@@ -1,29 +1,26 @@
-from app.utils.auth_handler import signJWT
-from app.utils.auth_bearer import JWTBearer
-from app.auth.models import auth_models 
-# from pg_db import database, users
+from app.auth.models import auth_models
+from .models import UpdateUser
 from passlib.context import CryptContext
-from typing import List
+from app.utils.dbUtil import database
+from app.utils import hashUtil
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+def update_user(
+    request: UpdateUser,
+    currentUser: auth_models.UserList
+):
+    query = "UPDATE customers SET fullname=:fullname where email=:email"
+    return database.execute(query, values={"fullname": request.fullname, "email": currentUser.email})
 
-# def update_user(
-#     request: UpdateUser,
-#     currentUser: auth_models.UserList
-# ):
-#     query = "UPDATE customers SET fullname=:fullname where email=:email"
-#     return database.execute(query, values={"fullname": request.fullname, "email": currentUser.email})
-
-
-# def change_password(
-#     chgPwd: auth_models.ChangePassword,
-#     currentUser: auth_models.UserList
-# ):
-#     query = "UPDATE customers SET password=:password WHERE email=:email"
-#     return database.execute(query=query, values={"password": cryptoUtil.get_password_hash(chgPwd.new_password),
-#                                                 "email": currentUser.email})
+def change_password(
+    chgPwd: auth_models.ChangePassword,
+    currentUser: auth_models.UserList
+):
+    query = "UPDATE customers SET password=:password WHERE email=:email"
+    return database.execute(query=query, values={"password": hashUtil.get_password_hash(chgPwd.new_password),
+                                                "email": currentUser.email})
 
 
 
