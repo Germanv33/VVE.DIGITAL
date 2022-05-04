@@ -4,6 +4,7 @@ from app.utils.dbUtil import database
 from app.Exceptions.BusinessException import BusinessException
 from fastapi.responses import JSONResponse
 from app.auth import router as auth_router
+from app.users import router as user_router
 
 app = FastAPI(title="VVE API")
 
@@ -29,7 +30,7 @@ async def business_exception_handler(request: Request, e: BusinessException):
 
 
 app.include_router(auth_router.router, tags=["Auth"])
-
+app.include_router(user_router.router, tags=["User"])
 
 
 

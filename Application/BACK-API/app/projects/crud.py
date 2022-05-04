@@ -1,4 +1,3 @@
-
 from app.auth import models as auth_models
 from .models import UpdateUser, ChangePassword
 from passlib.context import CryptContext
@@ -8,21 +7,9 @@ from app.utils import hashUtil
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-def update_user(
-    request: UpdateUser,
-    currentUser: auth_models.UserList
-):
-    query = "UPDATE customers SET fullname=:fullname where email=:email"
-    return database.execute(query, values={"fullname": request.fullname, "email": currentUser.email})
-
-def change_password(
-    chgPwd: ChangePassword,
-    currentUser: auth_models.UserList
-):
-    query = "UPDATE customers SET password=:password WHERE email=:email"
-    return database.execute(query=query, values={"password": hashUtil.get_password_hash(chgPwd.new_password),
-                                                "email": currentUser.email})
-
+def get_project(id: int):
+    query = "SELECT * FROM project WHERE project.id = :id"
+    return database.execute(query, values={"id": id})
 
 
 

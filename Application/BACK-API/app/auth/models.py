@@ -27,11 +27,6 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     email: str = None
 
-class ChangePassword(BaseModel):
-    old_password: str = Field(..., example="old password")
-    new_password: str = Field(..., example="new password")
-    confirm_password: str = Field(..., example="confirm password")
-
 class EmailRequest(BaseModel):
     email: str
 
