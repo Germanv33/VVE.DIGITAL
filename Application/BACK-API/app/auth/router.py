@@ -56,3 +56,10 @@ async def register(user: models.UserCreate):
     await crud.save_user(user)
 
     return {**user.dict()}
+
+
+@router.get("/auth/token")
+async def token(token: str):
+    payload = auth_handler.decodeJWT(token)
+    return payload
+  

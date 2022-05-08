@@ -10,18 +10,18 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def update_user(
     request: UpdateUser,
-    currentUser: auth_models.UserList
+    currentEmail: str
 ):
     query = "UPDATE customers SET fullname=:fullname where email=:email"
-    return database.execute(query, values={"fullname": request.fullname, "email": currentUser.email})
+    return database.execute(query, values={"fullname": request.fullname, "email": currentEmail})
 
 def change_password(
     chgPwd: ChangePassword,
-    currentUser: auth_models.UserList
+    currentEmail: str
 ):
     query = "UPDATE customers SET password=:password WHERE email=:email"
     return database.execute(query=query, values={"password": hashUtil.get_password_hash(chgPwd.new_password),
-                                                "email": currentUser.email})
+                                                "email": currentEmail})
 
 
 

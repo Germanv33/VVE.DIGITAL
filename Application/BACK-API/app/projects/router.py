@@ -1,10 +1,6 @@
-from fastapi import APIRouter, HTTPException, Depends
-from fastapi.security import OAuth2PasswordRequestForm
-from app.auth.models import UserCreate
-from .models import ChangePassword, UpdateUser
-from app.auth import crud as auth_crud
+from fastapi import APIRouter, Depends
+
 from . import crud
-from app.utils import hashUtil,  auth_handler, auth_bearer
 from app.Exceptions.BusinessException import BusinessException
 
 
