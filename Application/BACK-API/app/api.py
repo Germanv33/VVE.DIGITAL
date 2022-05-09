@@ -6,6 +6,7 @@ from fastapi.responses import JSONResponse
 from app.auth import router as auth_router
 from app.users import router as user_router
 from app.projects import router as project_router
+from app.worker import router as worker_router
 
 app = FastAPI(title="VVE API")
 
@@ -34,7 +35,7 @@ async def business_exception_handler(request: Request, e: BusinessException):
 app.include_router(auth_router.router, tags=["Auth"])
 app.include_router(user_router.router, tags=["User"])
 app.include_router(project_router.router, tags=["Project"])
-
+app.include_router(worker_router.router, tags=["Workers"])
 
 
 
