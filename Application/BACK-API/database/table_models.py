@@ -1,7 +1,14 @@
+from email.policy import default
+import enum
 import  sqlalchemy
-from sqlalchemy import  MetaData
+from sqlalchemy import MetaData
 
 metadata = MetaData()
+
+class StatusColors(enum.Enum):
+    GREEN = "green"
+    YELLOW = "yellow"
+    RED = "red"
 
 users = sqlalchemy.Table(
     "customers",
@@ -36,9 +43,11 @@ project = sqlalchemy.Table(
     sqlalchemy.Column("id"         , sqlalchemy.INTEGER, primary_key=True),
     sqlalchemy.Column("customer_id", sqlalchemy.INTEGER, sqlalchemy.ForeignKey('customers.id', ondelete='CASCADE'), nullable=False, unique=True),
     sqlalchemy.Column("name"       , sqlalchemy.String),
-    sqlalchemy.Column("cost"       , sqlalchemy.String),
+    sqlalchemy.Column("cost"       , sqlalchemy.Integer),
     sqlalchemy.Column("dev_team_id", sqlalchemy.INTEGER),
-    sqlalchemy.Column("status"     , sqlalchemy.String),
+    sqlalchemy.Column("status"     , sqlalchemy.String, default="Project initialization", server_default="Project initialization"),
+    sqlalchemy.Column("status_color", sqlalchemy.Enum(StatusColors), nullable=False, default=StatusColors.YELLOW.value, server_default=StatusColors.YELLOW.value)
+
 )
 
  
@@ -57,11 +66,11 @@ worker = sqlalchemy.Table(
     "worker",
     metadata,
     sqlalchemy.Column("id"        , sqlalchemy.INTEGER, primary_key=True),
-    sqlalchemy.Column("team_id"   , sqlalchemy.INTEGER, sqlalchemy.ForeignKey('dev_team.id', ondelete='CASCADE')),
+    sqlalchemy.Column("team_id"   , sqlalchemy.INTEGER, sqlalchemy.ForeignKey('dev_team.id', ondelete='CASCADE'), nullable=True),
     sqlalchemy.Column("fullname"  , sqlalchemy.String),
     sqlalchemy.Column("password"  , sqlalchemy.String),
     sqlalchemy.Column("email"     , sqlalchemy.String, nullable=False, unique=True),
-    sqlalchemy.Column("role"      , sqlalchemy.Enum(*worker_status, name="worker_status")),
+    sqlalchemy.Column("role"      , sqlalchemy.Enum(*worker_status, name="worker_status"), server_default='developer'),
 )
 
 
@@ -105,3 +114,4 @@ review = sqlalchemy.Table(
     sqlalchemy.Column("text"       , sqlalchemy.String),
     sqlalchemy.Column("stars"      , sqlalchemy.Enum(*stars, name = "stars")), 
 )
+

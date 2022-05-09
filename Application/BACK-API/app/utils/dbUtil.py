@@ -19,3 +19,5 @@ def database_pgsql_url_config():
 database = databases.Database(database_pgsql_url_config())
 engine = sqlalchemy.create_engine(database_pgsql_url_config())
 metadata.create_all(engine)
+
+database.connection.execute()
