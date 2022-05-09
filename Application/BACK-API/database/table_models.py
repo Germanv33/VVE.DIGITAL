@@ -10,6 +10,8 @@ class StatusColors(enum.Enum):
     YELLOW = "yellow"
     RED = "red"
 
+
+
 users = sqlalchemy.Table(
     "customers",
     metadata,
@@ -36,6 +38,7 @@ payment = sqlalchemy.Table(
     sqlalchemy.Column("project_id"     , sqlalchemy.INTEGER, sqlalchemy.ForeignKey('project.id', ondelete='CASCADE'), nullable=False, unique=True),
 )
 
+status_colors = ('red', 'yellow', 'green')
 
 project = sqlalchemy.Table(
     "project",
@@ -46,7 +49,7 @@ project = sqlalchemy.Table(
     sqlalchemy.Column("cost"       , sqlalchemy.Integer),
     sqlalchemy.Column("dev_team_id", sqlalchemy.INTEGER),
     sqlalchemy.Column("status"     , sqlalchemy.String, default="Project initialization", server_default="Project initialization"),
-    sqlalchemy.Column("status_color", sqlalchemy.Enum(StatusColors), nullable=False, default=StatusColors.YELLOW.value, server_default=StatusColors.YELLOW.value)
+    sqlalchemy.Column("status_color", sqlalchemy.Enum(*status_colors, name="status_colors"), nullable=False, default="yellow", server_default="yellow")
 
 )
 
