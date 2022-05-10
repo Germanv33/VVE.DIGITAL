@@ -1,0 +1,132 @@
+a
+    text-decoration: none
+    
+    
+.full_header_container
+    position: absolute
+    top: 40px
+    left: 0px
+    right: 0px
+    bottom: 0px
+    max-width: 100%
+    
+    
+.header
+    margin: auto
+    max-width:  1200px
+    display: flex
+    height: 61px
+    align-items: center
+    width: 100%
+    align-items: center
+ 
+.logo
+    display: flex
+    align-items: center
+    margin-left: 0px
+    span
+        margin-left: 13px
+        font-family: 'Dongle'
+        font-style: normal
+        font-weight: 400
+        font-size: 36px
+        line-height: 52px
+        color: white
+        
+.menu
+    display: flex
+    margin-left: 20%
+    align-items: center
+    flex-wrap: wrap
+    width: 36%
+    justify-content: space-between
+
+    a
+        padding: 15px 0px
+        display: inline-block
+        color: #CECECE
+        position: relative
+        transition: 0.5s padding, 0.5s color
+        span
+            white-space: nowrap
+            font-family: 'Poppins'
+            font-style: normal
+            font-weight: 500
+            font-size: 16px
+            line-height: 24px
+
+        span.active
+            color: #AD6CCA
+
+    a:hover
+        padding: 15px
+        color: #AD6CCA
+        
+
+    a:hover::after
+        width: 100%
+        right: 0
+
+    a::after 
+        background: none repeat scroll 0 0 transparent
+        bottom: 0
+        content: ""
+        display: block
+        height: 2px
+        right: 0
+        position: absolute
+        background: linear-gradient(to left, #AD6CCA, #01DE8E 100%)
+        transition: width .5s ease 0s, right .5s ease 0s
+        width: 0
+        
+
+.header_span
+    font-weight: 400
+    font-size: 14px
+    line-height: 18px
+
+.right_side
+    align-items: center
+    display: flex
+    margin-left: 5%
+    justify-content: space-between
+
+
+.project__btn
+    margin-right: 33px
+    padding: 5px 13px
+    border: 2px solid #AD6CCA
+    border-radius: 10px
+    transition: 0.5s border
+    span
+        font-family: 'Poppins'
+        font-style: normal
+        font-weight: 700
+        font-size: 18px
+        line-height: 27px
+        color: #FFFFFF
+        transition: 0.5s color
+
+.project__btn:hover
+    border: 2px solid #ffff
+    span
+        color: #AD6CCA
+
+
+.signin__btn
+    font-family: 'Poppins'
+    font-style: normal
+    font-weight: 700
+    font-size: 18px
+    line-height: 27px
+    text-align: center
+    color: #01DE8E
+    span
+        transition: 0.5s color
+
+.signin__btn:hover
+    span
+        color: #AD6CCA
+
+
+
