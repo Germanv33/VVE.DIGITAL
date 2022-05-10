@@ -12,4 +12,3 @@ class WorkerCreate(BaseModel):
     fullname: str
     email: str
     password: str
-    

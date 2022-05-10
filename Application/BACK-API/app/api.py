@@ -32,8 +32,8 @@ async def business_exception_handler(request: Request, e: BusinessException):
 
 
 
-app.include_router(auth_router.router, tags=["Auth"])
-app.include_router(user_router.router, tags=["User"])
+app.include_router(auth_router.router, tags=["Customers Auth"])
+app.include_router(user_router.router, tags=["Customers"])
 app.include_router(project_router.router, tags=["Project"])
 app.include_router(worker_router.router, tags=["Workers"])
 
