@@ -7,9 +7,9 @@ def save_user(user: models.UserCreate):
     return database.execute(query, values={"email": user.email, "password": user.password, "fullname": user.fullname})
 
 
-def reset_password(new_password: str, email: str):
-    query = "UPDATE customers SET password=:password WHERE email=:email"
-    return database.execute(query=query, values={"password": new_password, "email": email})
+# def reset_password(new_password: str, email: str):
+#     query = "UPDATE customers SET password=:password WHERE email=:email"
+#     return database.execute(query=query, values={"password": new_password, "email": email})
 
 
 def find_existed_user(email: str):

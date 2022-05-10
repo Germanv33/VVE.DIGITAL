@@ -1,5 +1,3 @@
-
-
 from passlib.context import CryptContext
 from app.utils.dbUtil import database
 

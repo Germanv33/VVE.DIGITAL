@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel
 
 class Project(BaseModel):
     customer_id: int

@@ -7,16 +7,23 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def get_worker(email: str):
     query = "SELECT * FROM worker WHERE worker.email = :email"
-    return database.execute(query, values={"email": email})
+    return database.fetch_one(query, values={"email": email})
 
 
-def create_worker(register_info: WorkerCreate):
+def save_worker(register_info: WorkerCreate):
     query = "INSERT INTO worker (email, fullname, password) VALUES (:email, :fullname, :password)"
     return database.execute(query, values={"email": WorkerCreate.email, "password": WorkerCreate.password, "fullname": WorkerCreate.fullname})
+
 
 def create_manager(register_info: WorkerCreate):
     query = "INSERT INTO worker (email, fullname, password, role) VALUES (:email, :fullname, :password, :role)"
     return database.execute(query, values={"email": WorkerCreate.email, "password": WorkerCreate.password, "fullname": WorkerCreate.fullname, "role": 'project manager'})
+
+
+def reset_password(new_password: str, email: str):
+    query = "UPDATE worker SET password=:password WHERE email=:email"
+    return database.execute(query=query, values={"password": new_password, "email": email})
+
 
 
 

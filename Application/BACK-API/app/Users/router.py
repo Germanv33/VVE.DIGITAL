@@ -1,11 +1,11 @@
 
-from fastapi import APIRouter, HTTPException, Depends, Request
+from fastapi import APIRouter, Depends, Request
 
 
 from .models import ChangePassword, UpdateUser
 from app.auth import crud as auth_crud
 from . import crud
-from app.utils import hashUtil, auth_handler, auth_bearer
+from app.utils import hashUtil, auth_bearer
 from app.Exceptions.BusinessException import BusinessException
 
 

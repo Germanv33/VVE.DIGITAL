@@ -1,5 +1,3 @@
-
-from app.auth import models as auth_models
 from .models import UpdateUser, ChangePassword
 from passlib.context import CryptContext
 from app.utils.dbUtil import database
