@@ -1,9 +1,11 @@
 import Letterize from "https://cdn.skypack.dev/letterizejs@2.0.0";
+import anime from "animejs";
+
 const test = new Letterize({
     targets: ".animate-me",
 });
 
-const animation = anime.timeline({
+export const animation = anime.timeline({
     targets: test.listAll,
     delay: anime.stagger(100, {
         grid: [test.list[0].length, test.list.length],
