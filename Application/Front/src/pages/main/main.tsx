@@ -6,22 +6,28 @@ import { observer } from "mobx-react-lite";
 import main1 from "../../assets/img/main/main.svg";
 import main2 from "../../assets/img/main/main2.svg";
 import line from "../../assets/img/main/Sparator.svg";
+import Letterize from "letterizejs";
+import anime from "animejs";
 
 const MainPage = () => {
-  useEffect(() => {
-    const script = document.createElement("script");
+  const test = new Letterize({
+    targets: ".animate-me",
+  });
 
-    script.src = "https://cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js";
-    script.type = "module";
-    script.async = true;
+  const animation = anime.timeline({
+    targets: test.listAll,
+    delay: anime.stagger(100, {
+      grid: [test.list[0].length, test.list.length],
+      from: "center",
+    }),
+    loop: true,
+  });
 
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
-
+  animation
+    .add({ scale: 0.5 })
+    .add({ letterSpacing: "10px" })
+    .add({ scale: 1 })
+    .add({ letterSpacing: "6px" });
   return (
     <main className="full_container">
       <div>
