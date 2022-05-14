@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { Link, animateScroll as scroll } from "react-scroll";
 import "./MainPageStyle.sass";
 import TopHeader from "../../components/header/header";
 import Footer from "../../components/footer/footer";
@@ -6,28 +7,31 @@ import { observer } from "mobx-react-lite";
 import main1 from "../../assets/img/main/main.svg";
 import main2 from "../../assets/img/main/main2.svg";
 import line from "../../assets/img/main/Sparator.svg";
-import Letterize from "letterizejs";
-import anime from "animejs";
+// import Letterize from "letterizejs";
+// import anime from "animejs";
 
 const MainPage = () => {
-  const test = new Letterize({
-    targets: ".animate-me",
-  });
+  const scrollToTop = () => {
+    scroll.scrollToTop();
+  };
+  //   const test = new Letterize({
+  //     targets: ".animate-me",
+  //   });
 
-  const animation = anime.timeline({
-    targets: test.listAll,
-    delay: anime.stagger(100, {
-      grid: [test.list[0].length, test.list.length],
-      from: "center",
-    }),
-    loop: true,
-  });
+  //   const animation = anime.timeline({
+  //     targets: test.listAll,
+  //     delay: anime.stagger(100, {
+  //       grid: [test.list[0].length, test.list.length],
+  //       from: "center",
+  //     }),
+  //     loop: true,
+  //   });
 
-  animation
-    .add({ scale: 0.5 })
-    .add({ letterSpacing: "10px" })
-    .add({ scale: 1 })
-    .add({ letterSpacing: "6px" });
+  //   animation
+  //     .add({ scale: 0.5 })
+  //     .add({ letterSpacing: "10px" })
+  //     .add({ scale: 1 })
+  //     .add({ letterSpacing: "6px" });
   return (
     <main className="full_container">
       <div>
@@ -40,9 +44,17 @@ const MainPage = () => {
             <h1>
               Мы знаем почему <br /> вы <span>здесь</span>
             </h1>
-            <a href="#project">
-              <button>Смотреть</button>
-            </a>
+            <Link
+              spy={true}
+              smooth={true}
+              offset={-70}
+              duration={500}
+              to="project"
+            >
+              <a>
+                <button>Смотреть</button>
+              </a>
+            </Link>
           </div>
           <div className="right">
             <div>
@@ -54,11 +66,11 @@ const MainPage = () => {
           </div>
         </section>
 
-        <div id="project" className="saparator">
+        <div className="saparator">
           <img src={line} alt="line" className="line" />
         </div>
 
-        <section className="project">
+        <section id="project" className="project">
           <div className="img_container">
             <img src={main2} alt="second lines" />
           </div>

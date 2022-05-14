@@ -7,6 +7,7 @@ import store from "../../stores/mainStore";
 
 export const TopHeader: FC = () => {
   const userStore = store.userStore;
+  const pathname = window.location.pathname;
 
   return (
     <header className="full_header_container">
@@ -18,19 +19,23 @@ export const TopHeader: FC = () => {
 
         <div className="menu">
           <NavLink to="/" className="menu__link first">
-            <span className="active">Главная</span>
+            <span className={pathname === "/" ? "active" : ""}>Главная</span>
           </NavLink>
 
           <NavLink to="#" className="menu__link">
-            <span>О нас</span>
+            <span className={pathname === "/about" ? "active" : ""}>О нас</span>
           </NavLink>
 
           <NavLink to="#" className="menu__link">
-            <span>Разработчики</span>
+            <span className={pathname === "/team" ? "active" : ""}>
+              Разработчики
+            </span>
           </NavLink>
 
           <NavLink to="#" className="menu__link">
-            <span>Отзывы</span>
+            <span className={pathname === "/review" ? "active" : ""}>
+              Отзывы
+            </span>
           </NavLink>
         </div>
 
@@ -39,7 +44,7 @@ export const TopHeader: FC = () => {
             <NavLink to="#" className="project__btn">
               <span>Create Project</span>
             </NavLink>
-            <NavLink to="#" className="signin__btn">
+            <NavLink to="/signin" className="signin__btn">
               <span>Sign In</span>
             </NavLink>
           </div>
