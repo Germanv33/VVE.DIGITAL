@@ -13,16 +13,50 @@ import line from "../../assets/img/main/Sparator.svg";
 import axios from "axios";
 import * as Yup from "yup";
 import { Formik, Form, useField } from "formik";
+import { setToken } from "../../utils/auth";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [checked, setCheck] = useState(false);
 
-  const checkChange = () => {
-    setCheck(!checked);
+  const signin = (password: string, username: string) => {
+    // make api call to our backend. we'll leave thisfor later
+    // const formData = new FormData();
+    // formData.append("username", username);
+    // formData.append("password", password);
+    const login_data = {
+      username: "email@mysite.com",
+      password: "changethis",
+    };
+    const headers = {
+      headers: {
+        "access-control-allow-credentials": "true",
+        "Content-Type": "application/json",
+      },
+    };
+    axios
+      .post(
+        "http://localhost:8081/api/v1/auth/login",
+        "username=" + username + "&password=" + password
+      )
+      .then(function (response) {
+        console.log(response.data.token);
+        if (response.status === 200) {
+          console.log("Login Successful");
+          if (response.data.access_token.access_token) {
+            setToken(response.data.access_token.access_token);
+            console.log(response.data.access_token.access_token);
+            navigate("/profile");
+          }
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "error");
+      });
   };
+
+  //   useEffect(() => {
+  //     const subscription = 234;
+  //   }, []);
 
   const login_validate = Yup.object({
     checkbox: Yup.bool(),
@@ -45,6 +79,7 @@ const Login = () => {
       }}
       validationSchema={login_validate}
       onSubmit={(values) => {
+        signin(values.password, values.email);
         console.log(values);
       }}
     >

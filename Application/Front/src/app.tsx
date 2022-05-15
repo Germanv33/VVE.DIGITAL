@@ -5,15 +5,23 @@ import store from "./stores/mainStore";
 import MainPage from "./pages/main/main";
 import Login from "./pages/login/login";
 import Registration from "./pages/registration/registration";
-import { RequireToken } from "./utils/auth";
+// import { RequireToken } from "./utils/auth";
 import Profile from "./pages/profile/profile";
+import { RequireToken } from "./utils/auth";
 
 const App = () => (
   <Router>
     <Provider {...store}>
       <Routes>
         {/* <RequireToken> */}
-        <Route path="profile" element={<Profile />} />
+        <Route
+          path="profile"
+          element={
+            <RequireToken>
+              <Profile />
+            </RequireToken>
+          }
+        />
         {/* </RequireToken> */}
         <Route path="signin" element={<Login />} />
         <Route path="signup" element={<Registration />} />

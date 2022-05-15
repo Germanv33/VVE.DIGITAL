@@ -1,4 +1,4 @@
-import { useLocation, Navigate } from "react-router-dom";
+import { useLocation, Navigate, RouteProps } from "react-router-dom";
 import React, { FC } from "react";
 
 export const setToken = (token: string) => {
