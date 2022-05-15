@@ -3,12 +3,29 @@ from app.utils.auth_bearer import JWTBearer
 from app.utils.dbUtil import database
 from app.Exceptions.BusinessException import BusinessException
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from app.auth import router as auth_router
 from app.users import router as user_router
 from app.projects import router as project_router
 from app.worker import router as worker_router
 
 app = FastAPI(title="VVE API")
+
+
+origins = [
+    "http://localhost:3000",
+    "localhost:3000"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
+
+
 
 @app.get("/", tags=["root"])
 async def read_root() -> dict:

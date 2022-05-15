@@ -1,9 +1,13 @@
 import "./input.sass";
-import React, { FC } from "react";
+import React, { ChangeEvent, ChangeEventHandler, FC } from "react";
 import { NavLink } from "react-router-dom";
 
 interface inputvalues {
+  value: string | number | readonly string[] | undefined;
   id: string;
+  className?: string;
+  onChange: ChangeEventHandler<HTMLInputElement>;
+  onBlur: React.FocusEventHandler<HTMLInputElement> | undefined;
   svg: any;
   placeholderValue: string;
   inputType: string;
@@ -14,27 +18,35 @@ interface inputvalues {
 export const MyInput = ({
   id,
   svg,
+  value,
+  onChange,
+  onBlur,
+  className,
   placeholderValue,
   inputType,
   padding = "0",
-  margin = "15 15 0 0",
+  margin,
 }: inputvalues) => {
   const style = {
     backgroundColor: `rgba(0,0,0,0)`,
     backgroundImage: `url(${svg})`,
+    margin: margin,
     // or to use a fixed background image
     // backgroundImage: `url(/path/to/static/preview.png)`,
   };
   const labelstyle = {
     padding: padding,
-    margin: margin,
   };
 
   return (
     <>
       <label style={labelstyle}>
         <input
-          className="myinput"
+          //   autoComplete="off"
+          onChange={onChange}
+          onBlur={onBlur}
+          value={value}
+          className={className + " myinput"}
           style={style}
           id={id}
           type={inputType}

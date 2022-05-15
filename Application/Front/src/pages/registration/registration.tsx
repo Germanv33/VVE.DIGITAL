@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { Component, useContext, useEffect, useState } from "react";
 import "./RegisterPageStyle.sass";
 import TopHeader from "../../components/header/header";
 import Footer from "../../components/footer/footer";
@@ -11,6 +11,8 @@ import fullname from "../../assets/img/signin/fullname.svg";
 import MyInput from "../../components/ui/input/input";
 import { MyCheckbox } from "../../components/ui/checkbox/checkbox";
 import { NavLink } from "react-router-dom";
+import * as Yup from "yup";
+import { Formik, Form, useField } from "formik";
 
 const Registration = () => {
   const [checked, setCheck] = useState(false);
@@ -19,6 +21,146 @@ const Registration = () => {
     setCheck(!checked);
   };
 
+  const reg_validate = Yup.object({
+    checkbox: Yup.bool().oneOf([true], "Accept Terms & Conditions is required"),
+
+    fullname: Yup.string()
+
+      .min(9, "fullname must be at least 5 charaters")
+      .required("Fullname is required"),
+
+    email: Yup.string()
+      .email()
+      .min(5, "email must be at least 5 charaters")
+      .required("Phone number is required"),
+
+    password: Yup.string()
+      .min(6, "Password must be at least 6 charaters")
+      .required("Password is required"),
+  });
+
+  const register_form = (
+    <Formik
+      initialValues={{
+        fullname: "",
+        email: "",
+        password: "",
+        checkbox: false,
+      }}
+      validationSchema={reg_validate}
+      onSubmit={(values) => {
+        console.log(values);
+      }}
+    >
+      {(props) => {
+        const {
+          values,
+          touched,
+          errors,
+          handleBlur,
+          handleChange,
+          isSubmitting,
+          handleSubmit,
+        } = props;
+
+        return (
+          <form action="submit" onSubmit={handleSubmit} method="post">
+            <h1>Create your account</h1>
+            <h2>Account to manage your projects</h2>
+            <div className="input__handler">
+              <MyInput
+                value={values.fullname}
+                className={`fullname__input ${
+                  touched.email && errors.email && "is-invalid"
+                }`}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                id="fullname"
+                inputType="text"
+                svg={fullname}
+                placeholderValue="Jacky Jonson"
+                padding="0"
+                margin={
+                  touched.fullname && errors.fullname
+                    ? "0px"
+                    : "0px 0px 15px 0px"
+                }
+              />
+              {touched.fullname && errors.fullname && (
+                <p className={"error"}> {errors.fullname}</p>
+              )}
+              <MyInput
+                value={values.email}
+                className={`email__input ${
+                  touched.email && errors.email && "is-invalid"
+                }`}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                id="email"
+                inputType="text"
+                svg={email}
+                placeholderValue="Your email"
+                padding="0"
+                margin={
+                  touched.email && errors.email ? "0px" : "0px 0px 15px 0px"
+                }
+              />
+              {touched.email && errors.email && (
+                <p className={"error"}> {errors.email}</p>
+              )}
+
+              <MyInput
+                value={values.password}
+                className={`password__input ${
+                  touched.password && errors.password && "is-invalid"
+                }`}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                id="password"
+                inputType="password"
+                svg={password}
+                placeholderValue="Password"
+                padding="0"
+                margin="0"
+              />
+              {touched.password && errors.password && (
+                <p className={"error"}> {errors.password}</p>
+              )}
+            </div>
+
+            <MyCheckbox
+              name="checkbox"
+              id="checkbox"
+              //   onChanges={checkChange}
+              label_title="I agree to the Terms & Conditions"
+            />
+
+            <button
+              disabled={errors.password || errors.email ? true : false}
+              className="signin__button"
+              type="submit"
+            >
+              Create my account
+            </button>
+
+            <span className="tologin">
+              Already have an account ?
+              <NavLink to="/signin">
+                <a> Sign in</a>
+              </NavLink>
+            </span>
+          </form>
+        );
+      }}
+    </Formik>
+  );
+
+  class RegForm extends Component<any, any> {
+    render() {
+      return register_form;
+    }
+  }
+
   return (
     <main className="full_container">
       <div id="we">
@@ -26,56 +168,7 @@ const Registration = () => {
       </div>
       <TopHeader />
       <div className="register_container">
-        <form action="submit" method="post">
-          <h1>Create your account</h1>
-          <h2>Account to manage your projects</h2>
-          <div className="input__handler">
-            <MyInput
-              id="fullname"
-              inputType="text"
-              svg={fullname}
-              placeholderValue="Jacky Jonson"
-              padding="0"
-              margin="0"
-            />
-
-            <MyInput
-              id="email"
-              inputType="text"
-              svg={email}
-              placeholderValue="Your email"
-              padding="0"
-              margin=" 15px 0px 15px 0px"
-            />
-
-            <MyInput
-              id="password"
-              inputType="password"
-              svg={password}
-              placeholderValue="Password"
-              padding="0"
-              margin="0"
-            />
-          </div>
-
-          <MyCheckbox
-            name="checkbox"
-            id="checkbox"
-            onChanges={checkChange}
-            label_title="I agree to the Terms & Conditions"
-          />
-
-          <button className="signin__button" type="submit">
-            Create my account
-          </button>
-
-          <span className="tologin">
-            Already have an account ?
-            <NavLink to="/signin">
-              <a> Sign in</a>
-            </NavLink>
-          </span>
-        </form>
+        <RegForm />
       </div>
       <div id="project" className="saparator">
         <img src={line} alt="line" className="line" />
