@@ -1,9 +1,9 @@
 import { makeAutoObservable, observable } from "mobx";
 
-export class ItemStore {
+export class tokenStore {
   constructor() {
     makeAutoObservable(this);
   }
 }
 
-export default new ItemStore();
+export default new tokenStore();

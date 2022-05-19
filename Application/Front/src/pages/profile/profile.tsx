@@ -5,6 +5,7 @@ import TopHeader from "../../components/header/header";
 import "./profile.sass";
 import we from "../../assets/img/signin/we.svg";
 import line from "../../assets/img/main/Sparator.svg";
+import store from "../../stores/mainStore";
 
 const Profile = () => {
   return (

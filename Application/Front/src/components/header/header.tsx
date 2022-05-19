@@ -1,13 +1,26 @@
 import "./header.sass";
 import logo from "../../assets/img/header/logo.svg";
-import React, { FC } from "react";
-import { NavLink } from "react-router-dom";
+import React, { FC, useEffect, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import store from "../../stores/mainStore";
+import { setToken } from "../../utils/auth";
+import { observer } from "mobx-react";
 
 export const TopHeader: FC = () => {
   const userStore = store.userStore;
   const pathname = window.location.pathname;
+  //   const [isToken, setisToken] = useState(false);
+  const navigate = useNavigate();
+
+  const logout = () => {
+    setToken(null);
+    // setisToken(false);
+    userStore.token = null;
+    navigate("/profile");
+  };
+
+  useEffect(() => {}, [store]);
 
   return (
     <header className="full_header_container">
@@ -39,7 +52,7 @@ export const TopHeader: FC = () => {
           </NavLink>
         </div>
 
-        {true ? (
+        {!userStore.token ? (
           <div className="right_side">
             <NavLink to="#" className="project__btn">
               <span>Create Project</span>
@@ -53,9 +66,15 @@ export const TopHeader: FC = () => {
             <NavLink to="#" className="project__btn">
               <span>Create Project</span>
             </NavLink>
-            <NavLink to="#" className="signin__btn">
-              <span>Profile </span>
-            </NavLink>
+            {pathname === "/profile" ? (
+              <a onClick={logout} className="signin__btn">
+                Logout
+              </a>
+            ) : (
+              <NavLink to="/profile" className="signin__btn">
+                <span>Profile </span>
+              </NavLink>
+            )}
           </div>
         )}
       </div>
@@ -63,4 +82,4 @@ export const TopHeader: FC = () => {
   );
 };
 
-export default TopHeader;
+export default observer(TopHeader);

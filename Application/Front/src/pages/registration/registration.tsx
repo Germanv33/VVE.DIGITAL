@@ -13,6 +13,7 @@ import { MyCheckbox } from "../../components/ui/checkbox/checkbox";
 import { NavLink } from "react-router-dom";
 import * as Yup from "yup";
 import { Formik, Form, useField } from "formik";
+import store from "../../stores/mainStore";
 
 const Registration = () => {
   const [checked, setCheck] = useState(false);

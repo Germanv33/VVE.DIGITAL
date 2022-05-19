@@ -58,8 +58,9 @@ async def register(user: models.UserCreate):
     return {**user.dict()}
 
 
-@router.get("/auth/token")
-async def token(token: str):
+@router.post("/auth/token")
+async def token_check(token: str):
     payload = auth_handler.decodeJWT(token)
+
     return payload
   

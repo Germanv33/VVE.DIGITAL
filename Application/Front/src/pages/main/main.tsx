@@ -7,31 +7,14 @@ import { observer } from "mobx-react-lite";
 import main1 from "../../assets/img/main/main.svg";
 import main2 from "../../assets/img/main/main2.svg";
 import line from "../../assets/img/main/Sparator.svg";
-// import Letterize from "letterizejs";
-// import anime from "animejs";
+import store from "../../stores/mainStore";
+import { AnimText } from "../../components/ui/animText/animText";
 
 const MainPage = () => {
   const scrollToTop = () => {
     scroll.scrollToTop();
   };
-  //   const test = new Letterize({
-  //     targets: ".animate-me",
-  //   });
 
-  //   const animation = anime.timeline({
-  //     targets: test.listAll,
-  //     delay: anime.stagger(100, {
-  //       grid: [test.list[0].length, test.list.length],
-  //       from: "center",
-  //     }),
-  //     loop: true,
-  //   });
-
-  //   animation
-  //     .add({ scale: 0.5 })
-  //     .add({ letterSpacing: "10px" })
-  //     .add({ scale: 1 })
-  //     .add({ letterSpacing: "6px" });
   return (
     <main className="full_container">
       <div>
@@ -57,12 +40,7 @@ const MainPage = () => {
             </Link>
           </div>
           <div className="right">
-            <div>
-              <div className="animate-me">vve.digital vve.digital</div>
-              <div className="animate-me">vve.digital vve.digital</div>
-              <div className="animate-me">vve.digital vve.digital</div>
-              <div className="animate-me">vve.digital vve.digital</div>
-            </div>
+            <AnimText />
           </div>
         </section>
 

@@ -14,25 +14,12 @@ import axios from "axios";
 import * as Yup from "yup";
 import { Formik, Form, useField } from "formik";
 import { setToken } from "../../utils/auth";
+import store from "../../stores/mainStore";
 
 const Login = () => {
   const navigate = useNavigate();
-
+  const userStore = store.userStore;
   const signin = (password: string, username: string) => {
-    // make api call to our backend. we'll leave thisfor later
-    // const formData = new FormData();
-    // formData.append("username", username);
-    // formData.append("password", password);
-    const login_data = {
-      username: "email@mysite.com",
-      password: "changethis",
-    };
-    const headers = {
-      headers: {
-        "access-control-allow-credentials": "true",
-        "Content-Type": "application/json",
-      },
-    };
     axios
       .post(
         "http://localhost:8081/api/v1/auth/login",
@@ -45,6 +32,8 @@ const Login = () => {
           if (response.data.access_token.access_token) {
             setToken(response.data.access_token.access_token);
             console.log(response.data.access_token.access_token);
+            userStore.token = response.data.access_token.access_token;
+            userStore.role = "customer";
             navigate("/profile");
           }
         }
@@ -53,10 +42,6 @@ const Login = () => {
         console.log(error, "error");
       });
   };
-
-  //   useEffect(() => {
-  //     const subscription = 234;
-  //   }, []);
 
   const login_validate = Yup.object({
     checkbox: Yup.bool(),
@@ -169,7 +154,13 @@ const Login = () => {
       </div>
       <TopHeader />
       <div className="login_container">
-        <LoginForm />
+        {!userStore.token ? (
+          <LoginForm />
+        ) : (
+          <div className="logged_wrapper">
+            <h1>You are already logged in!</h1>
+          </div>
+        )}
       </div>
       <div id="project" className="saparator">
         <img src={line} alt="line" className="line" />
