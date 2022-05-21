@@ -4,11 +4,12 @@ import App from "./app";
 import axios from "axios";
 
 import mainStore from "./stores/mainStore";
+import { fetchToken } from "./utils/auth";
 
 const userStore = mainStore.userStore;
 
 axios.defaults.baseURL = "http://localhost:8081";
-axios.defaults.headers.common["Authorization"] = "BEARER " + userStore.token;
+axios.defaults.headers.common["Authorization"] = "BEARER " + fetchToken();
 // axios.defaults.headers.post["Content-Type"] = "application/json";
 
 axios.interceptors.request.use(

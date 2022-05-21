@@ -46,7 +46,7 @@ project = sqlalchemy.Table(
     sqlalchemy.Column("id"         , sqlalchemy.INTEGER, primary_key=True),
     sqlalchemy.Column("customer_id", sqlalchemy.INTEGER, sqlalchemy.ForeignKey('customers.id', ondelete='CASCADE'), nullable=False, unique=True),
     sqlalchemy.Column("name"       , sqlalchemy.String),
-    sqlalchemy.Column("cost"       , sqlalchemy.Integer),
+    sqlalchemy.Column("cost"       , sqlalchemy.Integer, nullable=True),
     sqlalchemy.Column("dev_team_id", sqlalchemy.INTEGER),
     sqlalchemy.Column("status"     , sqlalchemy.String, default="Project initialization", server_default="Project initialization"),
     sqlalchemy.Column("status_color", sqlalchemy.Enum(*status_colors, name="status_colors"), nullable=False, default="yellow", server_default="yellow")

@@ -1,6 +1,6 @@
 from passlib.context import CryptContext
+from app.projects.models import ProjectCreate
 from app.utils.dbUtil import database
-
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -8,6 +8,16 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 def get_project(id: int):
     query = "SELECT * FROM project WHERE project.id = :id"
     return database.execute(query, values={"id": id})
+
+
+def create_project(project_info: ProjectCreate):
+    query = "INSERT INTO project (customer_id, name, dev_team_id) VALUES (:customer_id, :name, :dev_team_id)"
+    return database.execute(query, values={"customer_id": project_info.customer_id, "name": project_info.name, "dev_team_id": project_info.customer_id})
+
+
+def get_user_projects(user_id: int):
+    query = "SELECT * FROM projects WHERE project.customer_id = :customer_id"
+    return database.execute(query, values={"customer_id": user_id})
 
 
 

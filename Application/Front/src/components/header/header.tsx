@@ -4,7 +4,7 @@ import React, { FC, useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 import store from "../../stores/mainStore";
-import { setToken } from "../../utils/auth";
+import { fetchToken, setToken } from "../../utils/auth";
 import { observer } from "mobx-react";
 
 export const TopHeader: FC = () => {
@@ -17,7 +17,7 @@ export const TopHeader: FC = () => {
     setToken(null);
     // setisToken(false);
     userStore.token = null;
-    navigate("/profile");
+    navigate("/");
   };
 
   useEffect(() => {}, [store]);
@@ -52,7 +52,7 @@ export const TopHeader: FC = () => {
           </NavLink>
         </div>
 
-        {!userStore.token ? (
+        {fetchToken() === null ? (
           <div className="right_side">
             <NavLink to="#" className="project__btn">
               <span>Create Project</span>
