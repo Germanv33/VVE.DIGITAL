@@ -71,6 +71,7 @@ const Profile = () => {
           </div>
           <div className="text__info">
             <h1>{userStore.fullName}</h1>
+            <span>Это ваша страница проектов</span>
             <button>Создать новый проект</button>
           </div>
         </div>
