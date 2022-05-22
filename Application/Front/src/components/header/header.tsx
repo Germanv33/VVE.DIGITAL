@@ -17,6 +17,8 @@ export const TopHeader: FC = () => {
     setToken(null);
     // setisToken(false);
     userStore.token = null;
+    userStore.fullName = "Your Fullname";
+    userStore.email = "";
     navigate("/");
   };
 

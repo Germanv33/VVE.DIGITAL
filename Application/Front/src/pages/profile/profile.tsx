@@ -16,26 +16,27 @@ const Profile = () => {
   const navigate = useNavigate();
 
   const find_info = () => {
+    let config = {
+      headers: {
+        Authorization: "BEARER " + fetchToken(),
+      },
+    };
     axios
-      .post("http://localhost:8081/api/v1/customers/token")
+      .get("http://localhost:8081/api/v1/customers/token", (config = config))
       .then(function (response) {
         console.log("query results:");
-        console.log(fetchToken());
         console.log("userstore token = " + userStore.token);
         if (response.status === 200) {
           console.log("Query Successful");
           if (response.data.email) {
             userStore.fullName = response.data.fullname;
             userStore.email = response.data.email;
-            console.log("name" + userStore.fullName);
-            console.log("email:" + userStore.email);
+            console.log("name: " + userStore.fullName);
+            console.log("email: " + userStore.email);
           } else {
-            console.log("Invalid info");
-            console.log("name" + userStore.fullName);
-            console.log("email:" + userStore.email);
-            setToken(null);
-            userStore.token = null;
-            navigate("/");
+            console.log("Token invalid or not provided");
+            console.log("name: " + userStore.fullName);
+            console.log("email: " + userStore.email);
           }
         }
       })
@@ -50,7 +51,10 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    find_info();
+    console.log("token before: " + fetchToken());
+    if (!(fetchToken() === null)) {
+      find_info();
+    }
   }, []);
 
   return (

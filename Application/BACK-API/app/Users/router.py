@@ -54,14 +54,17 @@ async def change_password(passwords: ChangePassword, request:Request):
 #     return request.headers['Authorization']
 
 
-@router.post("/customers/token")
+@router.get("/customers/token")
 async def by_token_info(request: Request):
     token = request.headers['Authorization'][7:]
+    print(token)
     payload = auth_handler.decodeJWT(token)
+    print(payload)
+    
     if payload:
         user = await find_existed_user(str(payload["user_id"]))
         return models.UserList(**user)
             
     # user = models.UserPWD(**user)
-    return token
+    raise BusinessException(status_code=999, detail="Wrong token!")
     
