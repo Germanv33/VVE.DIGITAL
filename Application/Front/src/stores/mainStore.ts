@@ -1,15 +1,15 @@
 import { makeAutoObservable, observable } from "mobx";
-import { tokenStore } from "./tokenStore";
+import { projectStore } from "./projectStore";
 import { UserStore } from "./userStore";
 
 class MainStore {
   userStore: UserStore;
-  tokenStore: tokenStore;
+  projectStore: projectStore;
 
   constructor() {
     makeAutoObservable(this);
     this.userStore = new UserStore();
-    this.tokenStore = new tokenStore();
+    this.projectStore = new projectStore();
   }
 }
 

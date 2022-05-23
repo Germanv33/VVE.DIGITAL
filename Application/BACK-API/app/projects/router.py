@@ -11,17 +11,21 @@ router = APIRouter(
 )
 
 @router.get("/project/{project_id}")
-async def project_info(project_id: int):
-    project = await crud.get_project(id=project_id)
-    return {**project.dict()}
+async def project_info(project_id: str):
+    project = await crud.get_project(id=int(project_id))
+    return project
 
 
 @router.post("/create_project", dependencies=[Depends(auth_bearer.JWTBearer())])
-async def project_info(project_info: ProjectCreate):
+async def project_create(project_info: ProjectCreate):
     project = await crud.create_project(project_info)
-    return {**project.dict()}
+    return project
 
-@router.get("/user_projects/{user_id}", dependencies=[Depends(auth_bearer.JWTBearer())])
-async def project_info(user_id: str):
+@router.get("/user_projects/{user_id}")
+async def user_projects(user_id: str):
     project = await crud.get_user_projects(int(user_id))
-    return {**project.dict()}
+    return project
+
+
+
+

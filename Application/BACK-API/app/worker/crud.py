@@ -12,12 +12,12 @@ def get_worker(email: str):
 
 def save_worker(register_info: WorkerCreate):
     query = "INSERT INTO worker (email, fullname, password) VALUES (:email, :fullname, :password)"
-    return database.execute(query, values={"email": WorkerCreate.email, "password": WorkerCreate.password, "fullname": WorkerCreate.fullname})
+    return database.execute(query, values={"email": register_info.email, "password": register_info.password, "fullname": register_info.fullname})
 
 
 def create_manager(register_info: WorkerCreate):
     query = "INSERT INTO worker (email, fullname, password, role) VALUES (:email, :fullname, :password, :role)"
-    return database.execute(query, values={"email": WorkerCreate.email, "password": WorkerCreate.password, "fullname": WorkerCreate.fullname, "role": 'project manager'})
+    return database.execute(query, values={"email": register_info.email, "password": register_info.password, "fullname": register_info.fullname, "role": 'project manager'})
 
 
 def reset_password(new_password: str, email: str):

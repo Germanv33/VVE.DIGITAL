@@ -6,6 +6,7 @@ export class UserStore {
   role: string = "customer";
   token: string | null = "";
   email: string = "";
+  id: number | null = null;
   fullName: string = "Your fullname";
   constructor() {
     makeAutoObservable(this);
