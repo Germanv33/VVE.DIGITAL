@@ -1,6 +1,7 @@
 import "./input.sass";
 import React, { ChangeEvent, ChangeEventHandler, FC } from "react";
 import { NavLink } from "react-router-dom";
+import { FormikValues } from "formik";
 
 interface inputvalues {
   value: string | number | readonly string[] | undefined;
@@ -8,7 +9,7 @@ interface inputvalues {
   className?: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
   onBlur: React.FocusEventHandler<HTMLInputElement> | undefined;
-  svg: any;
+  svg?: any;
   placeholderValue: string;
   inputType: string;
   padding: string;
@@ -27,13 +28,21 @@ export const MyInput = ({
   padding = "0",
   margin,
 }: inputvalues) => {
-  const style = {
-    backgroundColor: `rgba(0,0,0,0)`,
-    backgroundImage: `url(${svg})`,
-    margin: margin,
-    // or to use a fixed background image
-    // backgroundImage: `url(/path/to/static/preview.png)`,
-  };
+  var style = {};
+
+  if (svg) {
+    style = {
+      backgroundColor: `rgba(0,0,0,0)`,
+      backgroundImage: `url(${svg})`,
+      margin: margin,
+    };
+  } else {
+    style = {
+      backgroundColor: `rgba(0,0,0,0)`,
+      margin: margin,
+    };
+  }
+
   const labelstyle = {
     padding: padding,
   };

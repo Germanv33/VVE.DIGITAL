@@ -10,16 +10,40 @@ import password from "../../assets/img/signin/password.svg";
 import fullname from "../../assets/img/signin/fullname.svg";
 import MyInput from "../../components/ui/input/input";
 import { MyCheckbox } from "../../components/ui/checkbox/checkbox";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { Formik, Form, useField } from "formik";
 import store from "../../stores/mainStore";
+import axios from "axios";
+import { setToken } from "../../utils/auth";
 
 const Registration = () => {
   const [checked, setCheck] = useState(false);
 
   const checkChange = () => {
     setCheck(!checked);
+  };
+
+  const navigate = useNavigate();
+  const userStore = store.userStore;
+
+  const register = (password: string, username: string, fullname: string) => {
+    axios
+      .post("http://localhost:8081/api/v1/auth/register", {
+        email: username,
+        password: password,
+        fullname: fullname,
+      })
+      .then(function (response) {
+        console.log(response.data.token);
+        if (response.status === 200) {
+          console.log("Register Successful");
+          navigate("/signin");
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "error");
+      });
   };
 
   const reg_validate = Yup.object({
@@ -51,6 +75,7 @@ const Registration = () => {
       validationSchema={reg_validate}
       onSubmit={(values) => {
         console.log(values);
+        register(values.password, values.email, values.fullname);
       }}
     >
       {(props) => {

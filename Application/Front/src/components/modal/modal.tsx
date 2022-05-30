@@ -52,9 +52,8 @@ export const Modal: FunctionComponent<ModalProps> = ({
                 </svg>
               </div>
 
-              {/* <div className="modalBody">{body}</div>
-              <div className="modalFooter">{footer}</div>
-               */}
+              <div className="modalBody">{body}</div>
+              {/* <div className="modalFooter">{footer}</div> */}
             </div>
           </div>
         </Portal>

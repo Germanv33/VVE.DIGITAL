@@ -15,20 +15,28 @@ import { ProjectCardComponent } from "../../components/profile/projectCard";
 import { IProject } from "../../stores/projectStore";
 import ProjectModal from "../../components/modal/ProjectModal";
 
+export interface dev_team {
+  id: number;
+  name: string;
+  description: string;
+  img: any;
+}
+
 const Profile = () => {
   const userStore = store.userStore;
   const projectStore = store.projectStore;
+  const [currentDevTeam, setcurrentDevTeam] = useState<dev_team[]>([]);
   const navigate = useNavigate();
 
-  const find_info = () => {
+  const find_info = async () => {
     let config = {
       headers: {
         Authorization: "BEARER " + fetchToken(),
       },
     };
-    axios
+    await axios
       .get("http://localhost:8081/api/v1/customers/token", (config = config))
-      .then(function (response) {
+      .then(function async(response) {
         console.log("query results:");
         console.log("userstore token = " + userStore.token);
         if (response.status === 200) {
@@ -52,29 +60,34 @@ const Profile = () => {
         navigate("/");
         console.log(error, "error");
       })
-      .then(function () {
-        find_projects();
+      .then(async function () {
+        await find_projects();
       });
   };
 
-  const find_projects = () => {
+  const find_projects = async () => {
     let config = {
       headers: {
         Authorization: "BEARER " + fetchToken(),
       },
     };
-    axios
+    await axios
       .get(
         "http://localhost:8081/api/v1/user_projects/" + userStore.id,
         (config = config)
       )
-      .then(function (response) {
+      .then(async function (response) {
         console.log(" project query results:");
 
         if (response.status === 200) {
           console.log("Query Successful");
           if (!(response.data === [])) {
             const projects: IProject[] = response.data;
+            projectStore.Projects = projects;
+            var project_team: IProject;
+            for (project_team of projects) {
+              await dev_team_info(project_team.dev_team_id);
+            }
             projectStore.Projects = projects;
             console.log(projectStore.Projects);
           }
@@ -87,6 +100,31 @@ const Profile = () => {
       });
   };
 
+  const dev_team_info = async (id: number) => {
+    let config = {
+      headers: {
+        Authorization: "BEARER " + fetchToken(),
+      },
+    };
+    await axios
+      .get("http://localhost:8081/api/v1/dev_team/" + id, (config = config))
+      .then(function (response) {
+        if (response.status === 200) {
+          console.log("Query Successful");
+          if (!(response.data === {}) && !(response.data === null)) {
+            const dev_team: dev_team = response.data;
+            const array = currentDevTeam;
+            array.push(dev_team);
+            setcurrentDevTeam(array);
+          }
+        }
+      })
+      .catch(function (error) {
+        console.log("Invalid");
+        projectStore.Projects = [];
+        console.log(error, "error");
+      });
+  };
   useEffect(() => {
     // if (!(fetchToken() === null)) {
     find_info();
@@ -127,15 +165,23 @@ const Profile = () => {
           </div>
 
           <div className="projects__wrapper">
-            {projectStore.Projects.map((project) => (
-              <ProjectCardComponent
-                key={project.id}
-                name={project.name}
-                date="20.05.2022"
-                team="Dev_Team"
-                status_color={project.status_color}
-              />
-            ))}
+            {projectStore.Projects.map((project) => {
+              if (true) {
+                return (
+                  <ProjectCardComponent
+                    key={project.id}
+                    name={project.name}
+                    date="20.05.2022"
+                    team={String(
+                      currentDevTeam.find(
+                        (team) => team.id == project.dev_team_id
+                      )?.name
+                    )}
+                    status_color={project.status_color}
+                  />
+                );
+              }
+            })}
           </div>
         </div>
       </div>

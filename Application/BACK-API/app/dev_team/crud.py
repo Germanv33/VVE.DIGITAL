@@ -13,7 +13,7 @@ def get_team(id: int):
 def save_team(register_info: DevTeamCreate):
     query = "INSERT INTO dev_team (name, description) VALUES (:name, :description)"
     return database.execute(query, values={"name": register_info.name, "description": register_info.description})
-
+    
 
 def change_info(team_info: DevTeam):
     query = "UPDATE dev_team SET name=:name, description=:description WHERE id=:id"

@@ -10,9 +10,9 @@ router = APIRouter(
 )
 
 
-@router.get("/dev_team")
-async def project_info(id: int):
-    team = await crud.get_team(id)
+@router.get("/dev_team/{dev_team_id}")
+async def project_info(dev_team_id: int):
+    team = await crud.get_team(dev_team_id)
     return team
 
 
@@ -26,6 +26,7 @@ async def change_password(info: DevTeam):
 async def create(team: DevTeamCreate):
     # new team
     team = await crud.save_team(team)
+    
     return team
 
 

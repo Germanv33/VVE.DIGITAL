@@ -9,6 +9,7 @@ import { observer } from "mobx-react";
 
 export const TopHeader: FC = () => {
   const userStore = store.userStore;
+  const projectStore = store.projectStore;
   const pathname = window.location.pathname;
   //   const [isToken, setisToken] = useState(false);
   const navigate = useNavigate();
@@ -56,7 +57,7 @@ export const TopHeader: FC = () => {
 
         {fetchToken() === null ? (
           <div className="right_side">
-            <NavLink to="#" className="project__btn">
+            <NavLink to="/signin" className="project__btn">
               <span>Create Project</span>
             </NavLink>
             <NavLink to="/signin" className="signin__btn">
@@ -65,8 +66,14 @@ export const TopHeader: FC = () => {
           </div>
         ) : (
           <div className="right_side">
-            <NavLink to="#" className="project__btn">
-              <span>Create Project</span>
+            <NavLink to="/profile" className="project__btn">
+              <button
+                onClick={() => {
+                  projectStore.ModalIsOpen = true;
+                }}
+              >
+                <span>Create Project</span>
+              </button>
             </NavLink>
             {pathname === "/profile" ? (
               <a onClick={logout} className="signin__btn">

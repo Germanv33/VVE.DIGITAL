@@ -1,0 +1,68 @@
+@mixin mybutton
+    button
+            background-color: #873AA9
+            width: 100px
+            height: 51px
+            background: rgba(158, 0, 255, 0.7)
+            box-shadow: 0px 0px 12px #5A4CFF
+            border-radius: 10px
+            
+            font-family: 'Poppins'
+            font-style: normal
+            font-weight: 600
+            font-size: 16px
+            line-height: 24px
+            text-align: center
+            color: #FFFFFF
+            transition: 0.5s color,0.5s background-color, 0.5s border
+
+    button:hover 
+        background-color: rgba(0, 0,0 ,0 )
+        border: 1px solid #873AA9
+        color:  rgba(158, 0, 255, 0.7)
+
+@keyframes slidein 
+  from
+    opacity: 0
+    
+  
+  to 
+    opacity: 1
+    
+  
+
+.StepForm
+    width: fit-content
+    margin: auto
+    display: flex
+    justify-content: space-between
+    flex-direction: column
+    @include mybutton
+    form
+        width: 100%
+        min-height: inherit
+        display: flex
+        flex-direction: column
+        justify-content: space-between
+    .myinput
+        color: #000000
+        
+    label
+        margin: auto
+    animation-name: slidein
+    animation-iteration-count: 1
+    transition: .5s ease
+
+    
+    
+    
+    
+.modalBody, .StepForm
+    min-height: inherit
+
+
+.buttons
+    display: flex
+    align-items: center
+    
+    justify-content: space-between
