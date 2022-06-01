@@ -15,6 +15,7 @@ import * as Yup from "yup";
 import { Formik, Form, useField } from "formik";
 import { setToken } from "../../utils/auth";
 import store from "../../stores/mainStore";
+import InfoModal from "../../components/modal/infoModal/InfoModal";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -40,6 +41,8 @@ const Login = () => {
       })
       .catch(function (error) {
         console.log(error, "error");
+        userStore.Modalinfo = String(error.message);
+        userStore.userModalisOpen = true;
       });
   };
 
@@ -149,6 +152,7 @@ const Login = () => {
 
   return (
     <main id="wrapper" className="full_container">
+      <InfoModal />
       <div id="we">
         <img src={we} alt="some lines" className="we__img" />
       </div>

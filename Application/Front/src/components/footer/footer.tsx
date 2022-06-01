@@ -22,7 +22,9 @@ export const Footer: FC = () => {
           Обратитесь к нам, мы будем рады помочь с дизайном и разработкой
         </span>
 
-        <button>Создать Проект</button>
+        <NavLink to="/worker/signin">
+          <button>Разработчик?</button>
+        </NavLink>
 
         <div className="footer__logo">
           <img src={logo} alt="logo" />

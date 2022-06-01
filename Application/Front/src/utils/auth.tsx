@@ -1,6 +1,6 @@
 import { useLocation, Navigate, RouteProps } from "react-router-dom";
-import React, { FC } from "react";
-import axios from "axios";
+import { FC } from "react";
+import { get_role } from "./AxiosQueries/customerQueries";
 
 export const setToken = (token: string | null) => {
   if (token == null) {
@@ -14,27 +14,7 @@ export const fetchToken = () => {
   return localStorage.getItem("temitope");
 };
 
-// export const token_check = () => {
-//   axios
-//     .post("http://localhost:8081/api/v1/auth/token", "token=" + userStore.token)
-//     .then(function (response) {
-//       console.log(response.data.token);
-//       if (response.status === 200) {
-//         console.log(" Successful Check");
-//         if (response.data.access_token.access_token) {
-//           return true;
-//         } else {
-//           return false;
-//         }
-//       }
-//     })
-//     .catch(function (error) {
-//       console.log(error, "error");
-//     });
-// };
-
 interface Props {
-  // any props that come into the component
   children: any;
 }
 

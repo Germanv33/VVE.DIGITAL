@@ -1,9 +1,14 @@
-from fastapi import APIRouter, Depends
+
+from fastapi import APIRouter, Depends, Response, Request
 from fastapi.security import OAuth2PasswordRequestForm
+from sqlalchemy import null
 from app.auth import models
 from app.auth import crud
 from app.utils import hashUtil,  auth_handler, auth_bearer
 from app.Exceptions.BusinessException import BusinessException
+from app.worker.crud import get_worker
+from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
 
 router = APIRouter(
     prefix='/api/v1'
@@ -24,11 +29,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
 
     access_token = auth_handler.signJWT(form_data.username)
 
-    # access_token_expires = jwtUtil.timedelta(minutes=constantUtil.ACCESS_TOKEN_EXPIRE_MINUTES)
-    # access_token = await jwtUtil.create_access_token(
-    #     data={"sub": form_data.username},
-    #     expires_delta=access_token_expires,
-    # )
+  
 
     results = {
         "access_token": access_token,
@@ -48,7 +49,8 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
 @router.post("/auth/register")
 async def register(user: models.UserCreate):
     row = await crud.find_existed_user(user.email)
-    if row:
+    row2 = await get_worker(user.email)
+    if row and row2:
         raise BusinessException(status_code=999, detail="User already registered!")
 
     # new user
@@ -64,3 +66,24 @@ async def token_check(token: str):
 
     return payload
   
+
+
+@router.get("/auth/role", dependencies=[Depends(auth_bearer.JWTBearer())])
+async def get_role(request: Request):
+    token = request.headers['Authorization'][7:]
+    payload = auth_bearer.decodeJWT(token)
+    currentEmail = payload['user_id']
+
+    row = await crud.find_existed_user(currentEmail)
+    if row:
+        role = "customer"
+        return Response(content=role, media_type="text/plain")
+    
+    row2 = await get_worker(currentEmail)
+    if row2:
+        role = "worker"
+        return Response(content=role, media_type="text/plain")
+
+    
+
+

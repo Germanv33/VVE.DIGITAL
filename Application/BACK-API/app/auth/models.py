@@ -33,3 +33,6 @@ class EmailRequest(BaseModel):
 class ResetPassword(BaseModel):
     new_password: str
     confirm_password: str
+
+class Role(BaseModel):
+    role: str

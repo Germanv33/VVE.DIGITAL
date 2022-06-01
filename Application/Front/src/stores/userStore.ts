@@ -3,11 +3,19 @@ import { makeAutoObservable, observable } from "mobx";
 import { fetchToken } from "../utils/auth";
 
 export class UserStore {
-  role: string = "customer";
+  role: string = "";
   token: string | null = "";
   email: string = "";
   id: number | null = null;
   fullName: string = "Your fullname";
+
+  //   Workers vars
+  team_id: number | null = null;
+
+  //   Modals vars
+  userModalisOpen: boolean = false;
+  Modalinfo: string = "";
+
   constructor() {
     makeAutoObservable(this);
   }

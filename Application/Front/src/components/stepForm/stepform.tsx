@@ -144,7 +144,7 @@ export default function Stepform() {
     if (finalStep && currentStep === 4) {
       makeRequest(data);
       create_project(data.name, data.team);
-      projectStore.ModalIsOpen = false;
+      projectStore.CreationModalIsOpen = false;
       return;
     }
 

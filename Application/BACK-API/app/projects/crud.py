@@ -1,6 +1,6 @@
 import datetime
 from passlib.context import CryptContext
-from app.projects.models import ProjectCreate
+from app.projects.models import ProjectCreate, Project
 from app.utils.dbUtil import database
 from app.meetings import crud as meetingsCrud
 from app.meetings import models as meetingsModels
@@ -15,17 +15,11 @@ def get_project(id: int):
 async def create_project(project_info: ProjectCreate):
     query = "INSERT INTO project (customer_id, name, dev_team_id) VALUES (:customer_id, :name, :dev_team_id)"
     values = {"customer_id": project_info.customer_id, "name": project_info.name, "dev_team_id": project_info.dev_team_id}
-    # await database.execute(query, values=values)
-    # id = await database.fetch_all(query="SELECT * FROM project WHERE customer_id=:customer_id AND name=:name AND dev_team_id=:dev_team_id", values=values)
-    # info = {
-    #     "project_id": 5,
-    #     "created_by": project_info.customer_id,
-    #     "date": datetime.datetime.now(),
-    #     "status": "Creation meeting!"
-    # }
+    row = await database.execute(query, values=values)
+    id = await database.execute(query="SELECT id FROM project WHERE project.customer_id=:customer_id AND project.name=:name AND project.dev_team_id=:dev_team_id", values=values)
     
-    # return await meetingsCrud.create_meeting(info)
-    return await database.execute(query, values=values)
+    return await meetingsCrud.create_meeting(int(id), 1, datetime.datetime.now(), "Creation meeting!")
+    
 
 def get_user_projects(user_id: int):
     query = "SELECT * FROM project WHERE project.customer_id = :customer_id"

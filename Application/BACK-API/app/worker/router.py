@@ -1,8 +1,11 @@
 from fastapi import APIRouter, Depends, Request
+from app.auth.crud import find_existed_user
+
+from app.projects.crud import get_project
 from . import crud
 from app.Exceptions.BusinessException import BusinessException
 from app.utils import hashUtil, auth_bearer, auth_handler
-from .models import WorkerCreate
+from .models import ProjectWorker, WorkerCreate, Worker
 from app.auth import models as auth_models
 from app.users import models as user_models
 from fastapi.security import OAuth2PasswordRequestForm
@@ -12,10 +15,16 @@ router = APIRouter(
 )
 
 
-@router.get("/worker")
-async def project_info(email: str):
-    worker = await crud.get_worker(email=email)
-    return worker
+@router.get("/worker/token",  dependencies=[Depends(auth_bearer.JWTBearer())])
+async def worker_info(request: Request):
+    token = request.headers['Authorization'][7:]
+    payload = auth_handler.decodeJWT(token)
+    
+    if payload:
+        worker = await crud.get_worker(email=str(payload["user_id"]))
+        return Worker(**worker)
+
+    raise BusinessException(status_code=999, detail="Wrong token!")
 
 
 @router.post("/worker/change_password", dependencies=[Depends(auth_bearer.JWTBearer())])
@@ -35,8 +44,9 @@ async def change_password(passwords: user_models.ChangePassword, request:Request
 
 @router.post("/worker/register")
 async def register(user: WorkerCreate):
-    row = await crud.get_worker(user.email)
-    if row:
+    row = await find_existed_user(user.email)
+    row2 = await crud.get_worker(user.email)
+    if row and row2:
         raise BusinessException(status_code=999, detail="User already registered!")
 
     # new user
@@ -80,3 +90,24 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     })
 
     return results
+
+
+
+@router.get("/worker/projects/token", dependencies=[Depends(auth_bearer.JWTBearer())])
+async def worker_projects(request: Request ):
+    token = request.headers['Authorization'][7:]
+    payload = auth_handler.decodeJWT(token)
+    
+    if payload:
+        worker = await crud.get_worker(email=str(payload["user_id"]))
+        info = Worker(**worker)
+        projects_id = await crud.find_projects(int(info.id))
+        projects = []
+        for id in projects_id: 
+            
+            print(ProjectWorker(**id).project_id)
+            project = await get_project(ProjectWorker(**id).project_id)
+            projects.append(project)
+        return projects
+
+    raise BusinessException(status_code=999, detail="Wrong token!")

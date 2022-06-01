@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 
 class Project(BaseModel):
+    id: int
     customer_id: int
     name: str
     cost: int

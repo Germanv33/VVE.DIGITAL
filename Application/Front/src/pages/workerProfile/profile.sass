@@ -1,0 +1,118 @@
+@mixin mybutton
+    button
+            background-color: #873AA9
+            width: 158px
+            height: 51px
+            background: rgba(158, 0, 255, 0.7)
+            box-shadow: 0px 0px 12px #5A4CFF
+            border-radius: 10px
+            
+            font-family: 'Poppins'
+            font-style: normal
+            font-weight: 600
+            font-size: 16px
+            line-height: 24px
+            text-align: center
+            color: #FFFFFF
+            transition: 0.5s color,0.5s background-color, 0.5s border
+
+    button:hover 
+        
+        background-color: rgba(0, 0,0 ,0 )
+        border: 1px solid #873AA9
+
+.we__img
+    position: absolute
+    max-width: 80% 
+    top: 100px
+    left: 0px
+    z-index: -100
+    left: 50%
+    transform: translate(-45%, 0)
+    transition: 0.5s opacity
+
+.saparator
+    margin-top: 18%
+    width: 100%
+    justify-content: center
+    display: flex
+
+.profile__container
+    width: 1200px
+    margin: auto
+    margin-top: 115px
+
+
+.profile__info
+    width: fit-content
+    display: flex
+    h1
+        font-family: 'Poppins'
+        font-style: normal
+        font-weight: 600
+        font-size: 22px
+        line-height: 28px
+        color: #EAE7D6
+        letter-spacing: 1px
+        text-transform: uppercase
+        margin-top: 30px
+    span
+        margin-top: 15px
+        font-family: 'Poppins'
+        font-style: normal
+        font-weight: 400
+        font-size: 14px
+        line-height: 10px
+        display: flex
+        align-items: center
+        color: #EAE7D6
+
+
+.text__info
+    margin-left: 55px
+    
+    @include mybutton
+    button
+        width: 251px
+        margin-top: 70px
+    
+
+.profile_image
+    background: linear-gradient(180deg, rgba(158, 0, 255, 0.77) 0%, rgba(85, 255, 102, 0.5929) 100%)
+    border-radius: 10px
+    display: flex
+    justify-content: center
+    padding: 3px
+    img
+        
+        border-radius: 3%
+
+    
+.project__container
+    margin-top: 91px
+    width: 100%
+    display: flex
+    flex-direction: column
+    
+
+.projects__title
+    display: flex
+    span
+        margin-left: 15px
+        font-family: 'Poppins'
+        font-style: normal
+        font-weight: 600
+        font-size: 15.5px
+        line-height: 19px
+        letter-spacing: 1px
+        text-transform: uppercase
+        color: #EAE7D6
+
+.projects__wrapper
+    margin: auto
+    max-width: 969px
+    width: 100%
+    display: flex
+    justify-content: space-between
+    margin-top: 20px
+    flex-wrap: wrap

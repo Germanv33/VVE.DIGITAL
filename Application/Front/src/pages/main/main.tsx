@@ -1,4 +1,3 @@
-import React, { useContext, useEffect, useState } from "react";
 import { Link, animateScroll as scroll } from "react-scroll";
 import "./MainPageStyle.sass";
 import TopHeader from "../../components/header/header";
@@ -7,14 +6,10 @@ import { observer } from "mobx-react-lite";
 import main1 from "../../assets/img/main/main.svg";
 import main2 from "../../assets/img/main/main2.svg";
 import line from "../../assets/img/main/Sparator.svg";
-import store from "../../stores/mainStore";
+
 import { AnimText } from "../../components/ui/animText/animText";
 
 const MainPage = () => {
-  const scrollToTop = () => {
-    scroll.scrollToTop();
-  };
-
   return (
     <main className="full_container">
       <div>

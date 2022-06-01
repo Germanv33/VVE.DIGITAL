@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from "react";
-import Portal from "../portal/portal";
+import Portal from "../../portal/portal";
 import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import store from "../../stores/mainStore";
+import store from "../../../stores/mainStore";
 import { CSSTransition } from "react-transition-group";
 
 import "./modal.sass";

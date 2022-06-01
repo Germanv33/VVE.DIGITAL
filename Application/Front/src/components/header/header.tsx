@@ -13,13 +13,18 @@ export const TopHeader: FC = () => {
   const pathname = window.location.pathname;
   //   const [isToken, setisToken] = useState(false);
   const navigate = useNavigate();
+  const devStore = store.devStore;
 
   const logout = () => {
     setToken(null);
-    // setisToken(false);
+
     userStore.token = null;
     userStore.fullName = "Your Fullname";
     userStore.email = "";
+    devStore.Teams = [];
+    projectStore.Projects = [];
+    projectStore.ProjectMeetings = [];
+    userStore.team_id = null;
     navigate("/");
   };
 
@@ -60,22 +65,33 @@ export const TopHeader: FC = () => {
             <NavLink to="/signin" className="project__btn">
               <span>Create Project</span>
             </NavLink>
+
             <NavLink to="/signin" className="signin__btn">
               <span>Sign In</span>
             </NavLink>
           </div>
         ) : (
           <div className="right_side">
-            <NavLink to="/profile" className="project__btn">
-              <button
-                onClick={() => {
-                  projectStore.ModalIsOpen = true;
-                }}
-              >
-                <span>Create Project</span>
-              </button>
-            </NavLink>
-            {pathname === "/profile" ? (
+            {userStore.role == "worker" ||
+            userStore.role == "project_manager" ? (
+              <NavLink to="#" className="project__btn">
+                <button>
+                  <span>Good Work</span>
+                </button>
+              </NavLink>
+            ) : (
+              <NavLink to="/profile" className="project__btn">
+                <button
+                  onClick={() => {
+                    projectStore.CreationModalIsOpen = true;
+                  }}
+                >
+                  <span>Create Project</span>
+                </button>
+              </NavLink>
+            )}
+
+            {pathname === "/profile" || pathname === "/worker/profile" ? (
               <a onClick={logout} className="signin__btn">
                 Logout
               </a>

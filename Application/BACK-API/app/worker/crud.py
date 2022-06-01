@@ -25,6 +25,10 @@ def reset_password(new_password: str, email: str):
     return database.execute(query=query, values={"password": new_password, "email": email})
 
 
+def find_projects(id:int):
+    query = "SELECT project_id FROM project_workers WHERE worker_id=:id"
+    return database.fetch_all(query=query, values={"id": id})
+
 
 
 

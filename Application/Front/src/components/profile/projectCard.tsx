@@ -9,6 +9,7 @@ interface ProjectCardI {
   date: string;
   team: string;
   status_color: string;
+  onClick: React.MouseEventHandler<HTMLButtonElement> | undefined;
 }
 
 export const ProjectCardComponent = ({
@@ -16,6 +17,7 @@ export const ProjectCardComponent = ({
   date,
   team,
   status_color,
+  onClick,
 }: ProjectCardI) => {
   return (
     <>
@@ -34,7 +36,7 @@ export const ProjectCardComponent = ({
           <span className="secondary__span">{team}</span>
           {/* </div> */}
         </div>
-        <button>
+        <button onClick={onClick}>
           <span style={{ color: status_color }}>Status</span>
         </button>
       </div>

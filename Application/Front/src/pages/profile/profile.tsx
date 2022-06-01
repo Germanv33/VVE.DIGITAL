@@ -1,5 +1,5 @@
 import { observer } from "mobx-react";
-import React, { useContext, useEffect, useState } from "react";
+import { Component, useEffect, useState } from "react";
 import Footer from "../../components/footer/footer";
 import TopHeader from "../../components/header/header";
 import "./profile.sass";
@@ -8,132 +8,31 @@ import line from "../../assets/img/main/Sparator.svg";
 import sword from "../../assets/img//profile/sword.svg";
 import store from "../../stores/mainStore";
 import profile_background from "../../assets/img/profile/Frame.png";
-import axios from "axios";
 import { useNavigate } from "react-router";
-import { fetchToken, setToken } from "../../utils/auth";
 import { ProjectCardComponent } from "../../components/profile/projectCard";
-import { IProject } from "../../stores/projectStore";
-import ProjectModal from "../../components/modal/ProjectModal";
-
-export interface dev_team {
-  id: number;
-  name: string;
-  description: string;
-  img: any;
-}
+import ProjectModal from "../../components/modal/ProjectCreationModal/CreationModal";
+import { find_info, get_role } from "../../utils/AxiosQueries/customerQueries";
 
 const Profile = () => {
   const userStore = store.userStore;
   const projectStore = store.projectStore;
-  const [currentDevTeam, setcurrentDevTeam] = useState<dev_team[]>([]);
+  const devStore = store.devStore;
   const navigate = useNavigate();
 
-  const find_info = async () => {
-    let config = {
-      headers: {
-        Authorization: "BEARER " + fetchToken(),
-      },
-    };
-    await axios
-      .get("http://localhost:8081/api/v1/customers/token", (config = config))
-      .then(function async(response) {
-        console.log("query results:");
-        console.log("userstore token = " + userStore.token);
-        if (response.status === 200) {
-          console.log("Query Successful");
-          if (response.data.email) {
-            userStore.fullName = response.data.fullname;
-            userStore.email = response.data.email;
-            userStore.id = response.data.id;
-            console.log(response.data);
-            console.log("id: " + userStore.id);
-            console.log("name: " + userStore.fullName);
-            console.log("email: " + userStore.email);
-          }
-        }
-      })
-      .catch(function (error) {
-        console.log("Invalid");
-        console.log(userStore.token);
-        userStore.token = null;
-        setToken(null);
-        navigate("/");
-        console.log(error, "error");
-      })
-      .then(async function () {
-        await find_projects();
-      });
+  const onClickHandler = (path: string) => {
+    navigate(path);
   };
 
-  const find_projects = async () => {
-    let config = {
-      headers: {
-        Authorization: "BEARER " + fetchToken(),
-      },
-    };
-    await axios
-      .get(
-        "http://localhost:8081/api/v1/user_projects/" + userStore.id,
-        (config = config)
-      )
-      .then(async function (response) {
-        console.log(" project query results:");
-
-        if (response.status === 200) {
-          console.log("Query Successful");
-          if (!(response.data === [])) {
-            const projects: IProject[] = response.data;
-            projectStore.Projects = projects;
-            var project_team: IProject;
-            for (project_team of projects) {
-              await dev_team_info(project_team.dev_team_id);
-            }
-            projectStore.Projects = projects;
-            console.log(projectStore.Projects);
-          }
-        }
-      })
-      .catch(function (error) {
-        console.log("Invalid");
-        projectStore.Projects = [];
-        console.log(error, "error");
-      });
-  };
-
-  const dev_team_info = async (id: number) => {
-    let config = {
-      headers: {
-        Authorization: "BEARER " + fetchToken(),
-      },
-    };
-    await axios
-      .get("http://localhost:8081/api/v1/dev_team/" + id, (config = config))
-      .then(function (response) {
-        if (response.status === 200) {
-          console.log("Query Successful");
-          if (!(response.data === {}) && !(response.data === null)) {
-            const dev_team: dev_team = response.data;
-            const array = currentDevTeam;
-            array.push(dev_team);
-            setcurrentDevTeam(array);
-          }
-        }
-      })
-      .catch(function (error) {
-        console.log("Invalid");
-        projectStore.Projects = [];
-        console.log(error, "error");
-      });
-  };
   useEffect(() => {
-    // if (!(fetchToken() === null)) {
-    find_info();
-    // }
-
-    // find_projects();
+    if (userStore.role == "worker") {
+      navigate("/worker/profile");
+    } else {
+      find_info(onClickHandler);
+    }
   }, []);
 
-  return (
+  //   Customer's profile html
+  const customersProfile = (
     <main id="wrapper" className="full_container">
       <ProjectModal />
       <div id="we">
@@ -151,7 +50,7 @@ const Profile = () => {
             <span>Это ваша страница проектов</span>
             <button
               onClick={() => {
-                projectStore.ModalIsOpen = true;
+                projectStore.CreationModalIsOpen = true;
               }}
             >
               Создать новый проект
@@ -169,14 +68,21 @@ const Profile = () => {
               if (true) {
                 return (
                   <ProjectCardComponent
+                    onClick={(e) => {
+                      projectStore.ProjectModalIsOpen = true;
+                    }}
                     key={project.id}
                     name={project.name}
-                    date="20.05.2022"
+                    date={String(
+                      projectStore.ProjectMeetings.find(
+                        (meeting) => meeting.project_id == project.id
+                      )?.date
+                    ).slice(0, 10)}
                     team={String(
-                      currentDevTeam.find(
+                      devStore.Teams.find(
                         (team) => team.id == project.dev_team_id
                       )?.name
-                    )}
+                    ).slice(0, 10)}
                     status_color={project.status_color}
                   />
                 );
@@ -192,6 +98,16 @@ const Profile = () => {
       <Footer />
     </main>
   );
+  //   Customer's profile RC
+  class CustomersProfile extends Component<any, any> {
+    render() {
+      return customersProfile;
+    }
+  }
+
+  // Check fo role
+
+  return <CustomersProfile />;
 };
 
 export default observer(Profile);

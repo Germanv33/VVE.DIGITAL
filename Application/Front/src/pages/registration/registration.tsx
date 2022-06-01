@@ -1,4 +1,4 @@
-import React, { Component, useContext, useEffect, useState } from "react";
+import { Component, useState } from "react";
 import "./RegisterPageStyle.sass";
 import TopHeader from "../../components/header/header";
 import Footer from "../../components/footer/footer";
@@ -12,18 +12,13 @@ import MyInput from "../../components/ui/input/input";
 import { MyCheckbox } from "../../components/ui/checkbox/checkbox";
 import { NavLink, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import { Formik, Form, useField } from "formik";
+import { Formik } from "formik";
 import store from "../../stores/mainStore";
 import axios from "axios";
-import { setToken } from "../../utils/auth";
+
+import InfoModal from "../../components/modal/infoModal/InfoModal";
 
 const Registration = () => {
-  const [checked, setCheck] = useState(false);
-
-  const checkChange = () => {
-    setCheck(!checked);
-  };
-
   const navigate = useNavigate();
   const userStore = store.userStore;
 
@@ -43,6 +38,8 @@ const Registration = () => {
       })
       .catch(function (error) {
         console.log(error, "error");
+        userStore.Modalinfo = String(error.message);
+        userStore.userModalisOpen = true;
       });
   };
 
@@ -189,6 +186,7 @@ const Registration = () => {
 
   return (
     <main className="full_container">
+      <InfoModal />
       <div id="we">
         <img src={we} alt="some lines" className="we__img" />
       </div>

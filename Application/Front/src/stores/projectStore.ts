@@ -9,14 +9,26 @@ export interface IProject {
   status_color: string;
 }
 
+export interface IProjectMeetings {
+  project_id: number;
+  created_by: number;
+  date: string;
+  status: string;
+}
+
 export class projectStore {
   Projects: IProject[] = [];
-  ModalIsOpen: boolean = false;
+  ProjectMeetings: IProjectMeetings[] = [];
+  CreationModalIsOpen: boolean = false;
+  ProjectModalIsOpen: boolean = false;
   constructor() {
     makeAutoObservable(this);
   }
   addProject(props: IProject) {
     this.Projects.push(props);
+  }
+  addProjectMeetings(props: IProjectMeetings) {
+    this.ProjectMeetings.push(props);
   }
 }
 
