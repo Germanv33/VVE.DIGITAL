@@ -30,5 +30,18 @@ Entrepreneur who wants to start a project or bring an existing business online
 
 -The platform will be created to comfortably manage a project, but not just one, but many.
 
+
+React (Front):
+In the project directory, you can run:
+
+### `npm start`
+
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+Fastapi (Back):
+### `activate venv`
+### `python main.py`
+
 ## My Favourite Languages
 [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=germanv33&layout=compact)](https://github.com/germanv33/github-readme-stats)
