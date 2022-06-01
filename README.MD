@@ -30,6 +30,7 @@ Entrepreneur who wants to start a project or bring an existing business online
 
 -The platform will be created to comfortably manage a project, but not just one, but many.
 
+## Start
 
 React (Front):
 In the project directory, you can run:
