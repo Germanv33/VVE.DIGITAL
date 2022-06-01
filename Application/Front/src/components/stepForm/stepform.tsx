@@ -496,46 +496,48 @@ export default function Stepform() {
               >
                 <h1>Choose a team</h1>
                 <div className="input__handler">
-                  <MyCheckboxCard
-                    team_name={teams[0].name ? teams[0].name : "team1"}
-                    name="first_team"
-                    id="first_team"
-                    onCheck={currentTeam.first_team}
-                    team_id={teams[0].id ? teams[0].id : 1}
-                    onChanges={(e) => {
-                      firstChange();
-                      values.first_team = !values.first_team;
-                      handleChange(e);
-                    }}
-                  />
+                  <div className="checkbox__wrapper">
+                    <MyCheckboxCard
+                      team_name={teams[0].name ? teams[0].name : "team1"}
+                      name="first_team"
+                      id="first_team"
+                      onCheck={currentTeam.first_team}
+                      team_id={teams[0].id ? teams[0].id : 1}
+                      onChanges={(e) => {
+                        firstChange();
+                        values.first_team = !values.first_team;
+                        handleChange(e);
+                      }}
+                    />
 
-                  <MyCheckboxCard
-                    // team_name={teams[1].name ? teams[1].name : "team2"}
-                    name="second_team"
-                    id="second_team"
-                    team_name={teams[1].name ? teams[1].name : "team2"}
-                    onCheck={currentTeam.second_team}
-                    team_id={teams[1].id ? teams[1].id : 2}
-                    onChanges={(e) => {
-                      secondChange();
-                      values.second_team = !values.second_team;
-                      handleChange(e);
-                    }}
-                  />
+                    <MyCheckboxCard
+                      // team_name={teams[1].name ? teams[1].name : "team2"}
+                      name="second_team"
+                      id="second_team"
+                      team_name={teams[1].name ? teams[1].name : "team2"}
+                      onCheck={currentTeam.second_team}
+                      team_id={teams[1].id ? teams[1].id : 2}
+                      onChanges={(e) => {
+                        secondChange();
+                        values.second_team = !values.second_team;
+                        handleChange(e);
+                      }}
+                    />
 
-                  <MyCheckboxCard
-                    // team_name={teams[2].name ? teams[2].name : "team2"}
-                    name="thirst_team"
-                    id="thirst_team"
-                    team_name={teams[2].name ? teams[2].name : "team3"}
-                    onCheck={currentTeam.thirst_team}
-                    team_id={teams[2].id ? teams[2].id : 3}
-                    onChanges={(e) => {
-                      thirstChange();
-                      values.thirst_team = !values.thirst_team;
-                      handleChange(e);
-                    }}
-                  />
+                    <MyCheckboxCard
+                      // team_name={teams[2].name ? teams[2].name : "team2"}
+                      name="thirst_team"
+                      id="thirst_team"
+                      team_name={teams[2].name ? teams[2].name : "team3"}
+                      onCheck={currentTeam.thirst_team}
+                      team_id={teams[2].id ? teams[2].id : 3}
+                      onChanges={(e) => {
+                        thirstChange();
+                        values.thirst_team = !values.thirst_team;
+                        handleChange(e);
+                      }}
+                    />
+                  </div>
 
                   {!(
                     values.first_team ||
