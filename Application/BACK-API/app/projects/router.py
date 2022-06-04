@@ -29,7 +29,7 @@ async def user_projects(user_id: str):
     return project
 
 
-@router.post("/best_dev_team/", dependencies=[Depends(auth_bearer.JWTBearer())])
+@router.post("/best_dev_team/")
 async def find_dev_team(money:int = Query(default=None), func_list: Union[list[str], None] = Query(default=None)):
     teams = await crud.get_dev_teams()
     return teams

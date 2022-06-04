@@ -1,5 +1,5 @@
 import { Field, FieldArray, Formik } from "formik";
-import { Component, useState } from "react";
+import { Component, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { MyCheckbox } from "../ui/checkbox/checkbox";
 import MyInput from "../ui/input/input";
@@ -94,6 +94,7 @@ export default function Stepform() {
   }
 
   async function create_project(name: string, dev_team: number) {
+    console.log("dev team number to creation:" + dev_team);
     let config = {
       headers: {
         Authorization: "BEARER " + fetchToken(),
@@ -125,6 +126,7 @@ export default function Stepform() {
           console.log(response.data);
           setinProcess(false);
           setCurrentStep((step) => step + 1);
+          projectStore.IsNeedToUpdate = true;
         }
       })
       .catch(function (error) {
@@ -138,14 +140,12 @@ export default function Stepform() {
     console.log("Form Submitted: ", data);
   };
 
-  const handleNextStep = async (newData: any, finalStep: boolean = false) => {
+  const handleNextStep = async (newData?: any, finalStep: boolean = false) => {
     setData((prev) => ({ ...prev, ...newData }));
 
     if (finalStep && currentStep === 4) {
       makeRequest(data);
       create_project(data.name, data.team);
-      projectStore.CreationModalIsOpen = false;
-      return;
     }
 
     if (finalStep && !isFound) {
@@ -429,6 +429,7 @@ export default function Stepform() {
     if (currentTeam.first_team === true) {
       currentTeam.second_team = false;
       currentTeam.thirst_team = false;
+      data.team = teams[0].id;
     }
     console.log(currentTeam);
   };
@@ -438,6 +439,7 @@ export default function Stepform() {
     if (currentTeam.second_team === true) {
       currentTeam.first_team = false;
       currentTeam.thirst_team = false;
+      data.team = teams[1].id;
     }
     console.log(currentTeam);
   };
@@ -447,6 +449,7 @@ export default function Stepform() {
     if (currentTeam.thirst_team === true) {
       currentTeam.second_team = false;
       currentTeam.first_team = false;
+      data.team = teams[2].id;
     }
     console.log(currentTeam);
   };
@@ -462,19 +465,8 @@ export default function Stepform() {
           }}
           onSubmit={(values) => {
             //   signin(values.password, values.email);
-
-            if (values.first_team) {
-              handleNextStep({ team: 1 }, true);
-              console.log(values);
-            }
-            if (values.second_team) {
-              handleNextStep({ team: 2 }, true);
-              console.log(values);
-            }
-            if (values.thirst_team) {
-              handleNextStep({ team: 3 }, true);
-              console.log(values);
-            }
+            handleNextStep(data, true);
+            console.log(values);
           }}
         >
           {(props) => {
@@ -506,6 +498,8 @@ export default function Stepform() {
                       onChanges={(e) => {
                         firstChange();
                         values.first_team = !values.first_team;
+                        console.log(data);
+
                         handleChange(e);
                       }}
                     />
@@ -520,6 +514,7 @@ export default function Stepform() {
                       onChanges={(e) => {
                         secondChange();
                         values.second_team = !values.second_team;
+                        console.log(data);
                         handleChange(e);
                       }}
                     />
@@ -534,15 +529,16 @@ export default function Stepform() {
                       onChanges={(e) => {
                         thirstChange();
                         values.thirst_team = !values.thirst_team;
+                        console.log(data);
                         handleChange(e);
                       }}
                     />
                   </div>
 
                   {!(
-                    values.first_team ||
-                    values.second_team ||
-                    values.thirst_team
+                    currentTeam.first_team ||
+                    currentTeam.second_team ||
+                    currentTeam.thirst_team
                   ) ? (
                     <p className={"error"}> You have to choose one team</p>
                   ) : (
@@ -555,9 +551,9 @@ export default function Stepform() {
                     disabled={
                       inProcess ||
                       !(
-                        values.first_team ||
-                        values.second_team ||
-                        values.thirst_team
+                        currentTeam.first_team ||
+                        currentTeam.second_team ||
+                        currentTeam.thirst_team
                       )
                     }
                     className="signin__button"

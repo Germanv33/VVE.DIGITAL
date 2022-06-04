@@ -41,6 +41,10 @@ export const Chat = () => {
   const [message, setMessage] = useState<string>("");
   const [messages, setMessages] = useState<MyMeassage[]>([]);
 
+  function isOpen(ws: WebSocket) {
+    return ws.readyState === ws.OPEN;
+  }
+
   useEffect(() => {
     var url = "ws://localhost:8081/api/v1/ws/" + clientId;
     var ws = new WebSocket(url);
@@ -58,14 +62,18 @@ export const Chat = () => {
     setWebsckt(ws);
     //clean up function when we close page
     return () => ws.close();
-  }, [message, messages]);
+  }, [messages]);
 
   const sendMessage = () => {
-    websckt.send(message);
+    console.log("message sended");
+    if (isOpen(websckt)) {
+      websckt.send(message);
+    } else {
+      console.log("WS IS CLOSED");
+    }
     // recieve message every send message
     websckt.onmessage = (e) => {
       const message = JSON.parse(e.data);
-      console.log("////");
       console.log(e.data);
       setMessages([...messages, message]);
     };

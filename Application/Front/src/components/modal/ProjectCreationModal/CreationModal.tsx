@@ -25,8 +25,8 @@ export const CreationModal = () => {
 
   return (
     <Modal
-      window_style="ProjectModalWindow"
-      title="Вход"
+      window_style="CreationProjectModalWindow"
+      title=""
       isOpen={isOpen}
       onClose={closeModal}
       body={Stepform()}

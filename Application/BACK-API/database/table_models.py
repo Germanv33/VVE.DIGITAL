@@ -1,7 +1,8 @@
 from email.policy import default
 import enum
+from tkinter.tix import INCREASING
 import  sqlalchemy
-from sqlalchemy import MetaData
+from sqlalchemy import Identity, MetaData
 
 metadata = MetaData()
 
@@ -92,17 +93,18 @@ check_point = sqlalchemy.Table(
 meeting = sqlalchemy.Table(
     "meeting",
     metadata,
+    sqlalchemy.Column("id"        , sqlalchemy.INTEGER, primary_key=True, autoincrement=True),
     sqlalchemy.Column("project_id", sqlalchemy.INTEGER, sqlalchemy.ForeignKey('project.id', ondelete='CASCADE'), nullable=False),
     sqlalchemy.Column("created_by", sqlalchemy.INTEGER, sqlalchemy.ForeignKey('worker.id'), nullable=False),
-    sqlalchemy.Column("date"      , sqlalchemy.DateTime),
+    sqlalchemy.Column("date"      , sqlalchemy.Date ),
     sqlalchemy.Column("status"    , sqlalchemy.String),
 ) 
 
 project_workers = sqlalchemy.Table(
     "project_workers",
     metadata,
-    sqlalchemy.Column("project_id", sqlalchemy.INTEGER, sqlalchemy.ForeignKey('project.id'), nullable=False),
-    sqlalchemy.Column("worker_id" , sqlalchemy.INTEGER, sqlalchemy.ForeignKey('worker.id'), nullable=False),
+    sqlalchemy.Column("project_id", sqlalchemy.INTEGER, sqlalchemy.ForeignKey('project.id', ondelete='CASCADE'), nullable=False),
+    sqlalchemy.Column("worker_id" , sqlalchemy.INTEGER, sqlalchemy.ForeignKey('worker.id', ondelete='CASCADE'), nullable=False),
 ) 
 
 stars = ("1",'2','3','4','5')

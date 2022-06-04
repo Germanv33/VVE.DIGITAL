@@ -1,3 +1,25 @@
+@mixin mybutton
+    button
+            background-color:  rgba(0, 0,0 ,0 )
+            width: 158px
+            height: 51px
+            border-radius: 10px
+            font-family: 'Poppins'
+            font-style: normal
+            font-weight: 600
+            font-size: 16px
+            line-height: 24px
+            text-align: center
+            color: black
+            transition: 0.5s color,0.5s background-color, 0.5s border
+
+    button:hover, button.active
+        color: white
+        background-color: #873AA9
+        border: 1px solid #873AA9
+
+
+
 ::placeholder 
     font-style: normal
     font-weight: 400
@@ -35,7 +57,7 @@
     transform: translate(-50%, -50%)
     background-color: #fff
     min-height: 436px
-    width: 700px
+    width: 850px
     display: flex
     flex-direction: column
     // justify-content: space-between
@@ -49,5 +71,20 @@
     transition: .5s ease
     .modalBody
         display: flex
-        justify-content: center
-    
+        flex-direction: column
+
+.slides
+    display: flex
+    justify-content: space-between
+
+    @include mybutton
+    button
+        margin-left: 2px
+        margin-right: 2px
+        
+        
+.project_info 
+    margin: 0
+    .chat
+
+

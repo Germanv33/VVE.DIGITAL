@@ -9,6 +9,8 @@ export class UserStore {
   id: number | null = null;
   fullName: string = "Your fullname";
 
+  in_process: boolean = false;
+
   //   Workers vars
   team_id: number | null = null;
 

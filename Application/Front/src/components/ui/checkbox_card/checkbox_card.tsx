@@ -80,7 +80,7 @@ ItemProps): JSX.Element => (
         <br />
       </span>
     </div>
-    <Link to={`devs/ ${team_id}`} target="_blank">
+    <Link to={`/devs/ ${team_id}`} target="_blank">
       <a>watch</a>
     </Link>
   </article>

@@ -15,18 +15,20 @@ import CreationModal from "../../components/modal/ProjectCreationModal/CreationM
 import { Link } from "react-router-dom";
 import { find_worker_info } from "../../utils/AxiosQueries/workerQueries";
 import ProjectModal from "../../components/modal/ProjectModal/ProjectModal";
+import { get_role } from "../../utils/AxiosQueries/customerQueries";
 
 const WorkerProfile = () => {
   const userStore = store.userStore;
   const projectStore = store.projectStore;
   const devStore = store.devStore;
   const navigate = useNavigate();
-
+  const [currentProjectModal, setCurrentProject] = useState(0);
   const onClickHandler = (path: string) => {
     navigate(path);
   };
 
   useEffect(() => {
+    get_role();
     if (userStore.role == "customer") {
       navigate("/profile");
     } else {
@@ -37,7 +39,7 @@ const WorkerProfile = () => {
   //  Worker's profile html
   const workerProfile = (
     <main id="wrapper" className="full_container">
-      <ProjectModal />
+      <ProjectModal project_id={currentProjectModal} />
       <CreationModal />
       <div id="we">
         <img src={we} alt="some lines" className="we__img" />

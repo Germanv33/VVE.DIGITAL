@@ -10,6 +10,7 @@ export interface IProject {
 }
 
 export interface IProjectMeetings {
+  id: number;
   project_id: number;
   created_by: number;
   date: string;
@@ -21,6 +22,7 @@ export class projectStore {
   ProjectMeetings: IProjectMeetings[] = [];
   CreationModalIsOpen: boolean = false;
   ProjectModalIsOpen: boolean = false;
+  IsNeedToUpdate: boolean = false;
   constructor() {
     makeAutoObservable(this);
   }

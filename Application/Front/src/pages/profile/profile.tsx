@@ -10,8 +10,14 @@ import store from "../../stores/mainStore";
 import profile_background from "../../assets/img/profile/Frame.png";
 import { useNavigate } from "react-router";
 import { ProjectCardComponent } from "../../components/profile/projectCard";
-import ProjectModal from "../../components/modal/ProjectCreationModal/CreationModal";
-import { find_info, get_role } from "../../utils/AxiosQueries/customerQueries";
+
+import {
+  find_info,
+  find_projects,
+  get_role,
+} from "../../utils/AxiosQueries/customerQueries";
+import ProjectModal from "../../components/modal/ProjectModal/ProjectModal";
+import CreationModal from "../../components/modal/ProjectCreationModal/CreationModal";
 
 const Profile = () => {
   const userStore = store.userStore;
@@ -19,22 +25,35 @@ const Profile = () => {
   const devStore = store.devStore;
   const navigate = useNavigate();
 
+  const [currentProjectModal, setCurrentProjectModal] = useState(0);
+  const [firstupdate, setfirstupdate] = useState(true);
+
   const onClickHandler = (path: string) => {
     navigate(path);
   };
 
   useEffect(() => {
+    get_role();
     if (userStore.role == "worker") {
       navigate("/worker/profile");
     } else {
       find_info(onClickHandler);
+      setfirstupdate(false);
     }
   }, []);
+
+  useEffect(() => {
+    if (!firstupdate) {
+      find_projects();
+      projectStore.IsNeedToUpdate = false;
+    }
+  }, [projectStore.IsNeedToUpdate]);
 
   //   Customer's profile html
   const customersProfile = (
     <main id="wrapper" className="full_container">
-      <ProjectModal />
+      <ProjectModal project_id={currentProjectModal} />
+      <CreationModal />
       <div id="we">
         <img src={we} alt="some lines" className="we__img" />
       </div>
@@ -63,32 +82,37 @@ const Profile = () => {
             <span>ПРОЕКТЫ</span>
           </div>
 
-          <div className="projects__wrapper">
-            {projectStore.Projects.map((project) => {
-              if (true) {
-                return (
-                  <ProjectCardComponent
-                    onClick={(e) => {
-                      projectStore.ProjectModalIsOpen = true;
-                    }}
-                    key={project.id}
-                    name={project.name}
-                    date={String(
-                      projectStore.ProjectMeetings.find(
-                        (meeting) => meeting.project_id == project.id
-                      )?.date
-                    ).slice(0, 10)}
-                    team={String(
-                      devStore.Teams.find(
-                        (team) => team.id == project.dev_team_id
-                      )?.name
-                    ).slice(0, 10)}
-                    status_color={project.status_color}
-                  />
-                );
-              }
-            })}
-          </div>
+          {!userStore.in_process ? (
+            <div className="projects__wrapper">
+              {projectStore.Projects.map((project) => {
+                if (true) {
+                  return (
+                    <ProjectCardComponent
+                      onClick={(e) => {
+                        projectStore.ProjectModalIsOpen = true;
+                        setCurrentProjectModal(project.id);
+                      }}
+                      key={project.id}
+                      name={project.name}
+                      date={String(
+                        projectStore.ProjectMeetings.find(
+                          (meeting) => meeting.project_id == project.id
+                        )?.date
+                      ).slice(0, 10)}
+                      team={String(
+                        devStore.Teams.find(
+                          (team) => team.id == project.dev_team_id
+                        )?.name
+                      ).slice(0, 10)}
+                      status_color={project.status_color}
+                    />
+                  );
+                }
+              })}
+            </div>
+          ) : (
+            <button>Loading...</button>
+          )}
         </div>
       </div>
 

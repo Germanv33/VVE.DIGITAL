@@ -56,7 +56,7 @@ export async function find_info(navigate: any) {
     });
 }
 
-const find_projects = async () => {
+export const find_projects = async () => {
   let config = {
     headers: {
       Authorization: "BEARER " + fetchToken(),
@@ -161,6 +161,36 @@ export const get_role = async () => {
           userStore.role = response.data;
         } else {
           userStore.role = "";
+        }
+      }
+    })
+    .catch(function (error) {
+      console.log("Invalid");
+      projectStore.Projects = [];
+      console.log(error, "error");
+    });
+};
+
+export const get_meetings = async (project_id: number) => {
+  let config = {
+    headers: {
+      Authorization: "BEARER " + fetchToken(),
+    },
+  };
+  await axios
+    .get(
+      "http://localhost:8081/api/v1/meeting/" + project_id,
+      (config = config)
+    )
+    .then(function (response) {
+      if (response.status === 200) {
+        console.log("Query Successful");
+        if (!(response.data === []) && !(response.data === null)) {
+          const meetingsList = response.data;
+          var meeting: IProjectMeetings;
+          for (meeting of meetingsList) {
+            projectStore.addProjectMeetings(meeting);
+          }
         }
       }
     })

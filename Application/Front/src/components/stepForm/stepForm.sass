@@ -14,12 +14,18 @@
             line-height: 24px
             text-align: center
             color: #FFFFFF
-            transition: 0.5s color,0.5s background-color, 0.5s border
+            transition: 0.5s color,0.5s background-color, 0.5s border, box-shadow 0.5s
 
     button:hover 
         background-color: rgba(0, 0,0 ,0 )
         border: 1px solid #873AA9
         color:  rgba(158, 0, 255, 0.7)
+
+    button:disabled
+        background-color: rgba(0, 0,0 ,0 )
+        box-shadow: 0px 0px 0px
+
+
 
 @keyframes slidein 
   from
@@ -66,5 +72,5 @@
 .buttons
     display: flex
     align-items: center
-    
+    @include mybutton
     justify-content: space-between
