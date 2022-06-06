@@ -82,6 +82,8 @@ export const find_projects = async () => {
           }
           projectStore.Projects = projects;
           console.log(projectStore.Projects);
+          userStore.in_process = false;
+          userStore.modal_in_process = false;
         }
       }
     })
@@ -89,6 +91,8 @@ export const find_projects = async () => {
       console.log("Invalid");
       projectStore.Projects = [];
       console.log(error, "error");
+      userStore.in_process = false;
+      userStore.modal_in_process = false;
     });
 };
 
@@ -143,6 +147,9 @@ export const get_meeting_info = async (project_id: number) => {
       console.log("Invalid");
       projectStore.Projects = [];
       console.log(error, "error");
+
+      userStore.modal_in_process = false;
+      userStore.in_process = false;
     });
 };
 
@@ -171,7 +178,14 @@ export const get_role = async () => {
     });
 };
 
-export const get_meetings = async (project_id: number) => {
+// Modal Project Requests
+
+export const get_technologies_list = async (project_id: number) => {
+  interface TechObject {
+    technology: string;
+    completeness: number;
+  }
+
   let config = {
     headers: {
       Authorization: "BEARER " + fetchToken(),
@@ -179,17 +193,59 @@ export const get_meetings = async (project_id: number) => {
   };
   await axios
     .get(
-      "http://localhost:8081/api/v1/meeting/" + project_id,
+      "http://localhost:8081/api/v1/project_technologies/" + project_id,
       (config = config)
     )
     .then(function (response) {
       if (response.status === 200) {
         console.log("Query Successful");
         if (!(response.data === []) && !(response.data === null)) {
+          const technologiesList = response.data;
+          var tech: TechObject;
+          for (tech of technologiesList) {
+            projectStore.addModalTechnology({
+              technology: tech.technology,
+              completeness: tech.completeness,
+            });
+          }
+          userStore.in_process = false;
+          userStore.modal_in_process = false;
+        }
+      }
+    })
+    .catch(function (error) {
+      console.log("Invalid");
+      projectStore.Projects = [];
+      console.log(error, "error");
+      userStore.in_process = false;
+      userStore.modal_in_process = false;
+    });
+};
+
+export const get_meeting_list = async (project_id: number) => {
+  interface TechObject {
+    technology: string;
+  }
+
+  let config = {
+    headers: {
+      Authorization: "BEARER " + fetchToken(),
+    },
+  };
+  await axios
+    .get(
+      "http://localhost:8081/api/v1/meeting/project_last/" + project_id,
+      (config = config)
+    )
+    .then(function (response) {
+      if (response.status === 200) {
+        console.log("Query Successful");
+
+        if (!(response.data === []) && !(response.data === null)) {
           const meetingsList = response.data;
           var meeting: IProjectMeetings;
           for (meeting of meetingsList) {
-            projectStore.addProjectMeetings(meeting);
+            projectStore.addModalMeeting(meeting);
           }
         }
       }
@@ -198,5 +254,7 @@ export const get_meetings = async (project_id: number) => {
       console.log("Invalid");
       projectStore.Projects = [];
       console.log(error, "error");
+      userStore.in_process = false;
+      userStore.modal_in_process = false;
     });
 };

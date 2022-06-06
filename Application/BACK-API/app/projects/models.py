@@ -13,5 +13,7 @@ class ProjectCreate(BaseModel):
     customer_id: int
     name: str
     dev_team_id: int
+    tecnologies: list[str]
+    cost: int
     
     

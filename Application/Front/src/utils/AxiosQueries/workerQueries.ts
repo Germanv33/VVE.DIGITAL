@@ -84,6 +84,8 @@ const find_projects = async () => {
           }
           projectStore.Projects = projects;
           console.log(projectStore.Projects);
+          userStore.in_process = false;
+          userStore.modal_in_process = false;
         }
       }
     })
@@ -91,6 +93,8 @@ const find_projects = async () => {
       console.log("Invalid");
       projectStore.Projects = [];
       console.log(error, "error");
+      userStore.in_process = false;
+      userStore.modal_in_process = false;
     });
 };
 

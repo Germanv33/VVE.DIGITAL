@@ -13,11 +13,14 @@ def get_project(id: int):
 
 
 async def create_project(project_info: ProjectCreate):
-    query = "INSERT INTO project (customer_id, name, dev_team_id) VALUES (:customer_id, :name, :dev_team_id)"
-    values = {"customer_id": project_info.customer_id, "name": project_info.name, "dev_team_id": project_info.dev_team_id}
-    row = await database.execute(query, values=values)
-    id = await database.execute(query="SELECT id FROM project WHERE project.customer_id=:customer_id AND project.name=:name AND project.dev_team_id=:dev_team_id", values=values)
-    
+    query = "INSERT INTO project (customer_id, name, dev_team_id, cost) VALUES (:customer_id, :name, :dev_team_id, :cost)"
+    values = {"customer_id": project_info.customer_id, "name": project_info.name, "dev_team_id": project_info.dev_team_id, "cost": project_info.cost}
+    await database.execute(query, values=values)
+    id = await database.execute(query="SELECT id FROM project WHERE project.customer_id=:customer_id AND project.name=:name AND project.dev_team_id=:dev_team_id AND cost=:cost", values=values)
+    for technology in project_info.tecnologies:
+        query = "INSERT INTO project_technology (project_id, dev_team_id, technology, completeness) VALUES (:project_id , :dev_team_id, :technology, :completeness)" 
+        values = {"project_id": id,  "dev_team_id": project_info.dev_team_id, "completeness": 0, "technology": technology}
+        await database.execute(query, values=values)
     return await meetingsCrud.create_meeting(int(id), 1, datetime.datetime.now(), "Creation meeting!")
     
 

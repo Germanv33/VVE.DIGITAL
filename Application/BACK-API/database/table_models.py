@@ -47,7 +47,7 @@ project = sqlalchemy.Table(
     sqlalchemy.Column("id"         , sqlalchemy.INTEGER, primary_key=True),
     sqlalchemy.Column("customer_id", sqlalchemy.INTEGER, sqlalchemy.ForeignKey('customers.id', ondelete='CASCADE'), nullable=False),
     sqlalchemy.Column("name"       , sqlalchemy.String),
-    sqlalchemy.Column("cost"       , sqlalchemy.Integer, nullable=True),
+    sqlalchemy.Column("cost"       , sqlalchemy.INTEGER, nullable=True),
     sqlalchemy.Column("dev_team_id", sqlalchemy.INTEGER, sqlalchemy.ForeignKey('dev_team.id', ondelete='CASCADE')),
     sqlalchemy.Column("status"     , sqlalchemy.String, default="Project initialization", server_default="Project initialization"),
     sqlalchemy.Column("status_color", sqlalchemy.Enum(*status_colors, name="status_colors"), nullable=False, default="yellow", server_default="yellow")
@@ -125,10 +125,10 @@ review = sqlalchemy.Table(
 project_technology = sqlalchemy.Table(
     "project_technology",
     metadata,
-    sqlalchemy.Column("id"         , sqlalchemy.INTEGER, primary_key=True),
-    sqlalchemy.Column("dev_team_id", sqlalchemy.INTEGER, sqlalchemy.ForeignKey('dev_team.id', ondelete='CASCADE'), nullable=False),
-    sqlalchemy.Column("technology" , sqlalchemy.String, nullable=False),
-    sqlalchemy.Column("completeness" , sqlalchemy.Float, nullable=False)
+    sqlalchemy.Column("project_id"   , sqlalchemy.INTEGER, sqlalchemy.ForeignKey('project.id', ondelete='CASCADE'), nullable=False),
+    sqlalchemy.Column("dev_team_id"  , sqlalchemy.INTEGER, sqlalchemy.ForeignKey('dev_team.id', ondelete='CASCADE'), nullable=False),
+    sqlalchemy.Column("technology"   , sqlalchemy.String, nullable=False),
+    sqlalchemy.Column("completeness" , sqlalchemy.Float, nullable=True)
 )
 
 
@@ -138,5 +138,5 @@ project_design = sqlalchemy.Table(
     sqlalchemy.Column("id"         , sqlalchemy.INTEGER, primary_key=True),
     sqlalchemy.Column("dev_team_id", sqlalchemy.INTEGER, sqlalchemy.ForeignKey('dev_team.id', ondelete='CASCADE'), nullable=False),
     sqlalchemy.Column("design" , sqlalchemy.String, nullable=False),
-    sqlalchemy.Column("completeness" , sqlalchemy.Float, nullable=False)
+    sqlalchemy.Column("completeness" , sqlalchemy.Float, nullable=True)
 )

@@ -11,6 +11,7 @@ from app.worker import router as worker_router
 from app.dev_team import router as dev_team_router
 from app.meetings import router as meeting_router
 from app.chat import router as chat_router
+from app.projectTech import router as project_technologies_router
 
 app = FastAPI(title="VVE API")
 
@@ -59,6 +60,7 @@ app.include_router(worker_router.router, tags=["Workers"])
 app.include_router(dev_team_router.router, tags=["Dev_Teams"])
 app.include_router(meeting_router.router, tags=["Meetings"])
 app.include_router(chat_router.router, tags=["Chat"])
+app.include_router(project_technologies_router.router, tags=["project_technologies"])
 
 
 

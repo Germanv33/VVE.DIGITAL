@@ -1,11 +1,12 @@
 import { observer } from "mobx-react";
-import { Component, useEffect, useState } from "react";
+import { Component, useEffect, useMemo, useState } from "react";
 import Footer from "../../components/footer/footer";
 import TopHeader from "../../components/header/header";
 import "./profile.sass";
 import we from "../../assets/img/signin/we.svg";
 import line from "../../assets/img/main/Sparator.svg";
-import sword from "../../assets/img//profile/sword.svg";
+import sword from "../../assets/img/profile/sword.svg";
+import loading_gif from "../../assets/img/profile/loading.gif";
 import store from "../../stores/mainStore";
 import profile_background from "../../assets/img/profile/Frame.png";
 import { useNavigate } from "react-router";
@@ -37,6 +38,7 @@ const Profile = () => {
     if (userStore.role == "worker") {
       navigate("/worker/profile");
     } else {
+      userStore.in_process = true;
       find_info(onClickHandler);
       setfirstupdate(false);
     }
@@ -44,8 +46,8 @@ const Profile = () => {
 
   useEffect(() => {
     if (!firstupdate) {
+      userStore.in_process = true;
       find_projects();
-      projectStore.IsNeedToUpdate = false;
     }
   }, [projectStore.IsNeedToUpdate]);
 
@@ -111,7 +113,13 @@ const Profile = () => {
               })}
             </div>
           ) : (
-            <button>Loading...</button>
+            <div className="gif__wrapper">
+              <img
+                src={loading_gif}
+                alt="loading gif"
+                className="loading_gif"
+              />
+            </div>
           )}
         </div>
       </div>

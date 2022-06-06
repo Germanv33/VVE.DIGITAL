@@ -22,7 +22,8 @@ const WorkerProfile = () => {
   const projectStore = store.projectStore;
   const devStore = store.devStore;
   const navigate = useNavigate();
-  const [currentProjectModal, setCurrentProject] = useState(0);
+
+  const [currentProjectModal, setCurrentProjectModal] = useState(0);
   const onClickHandler = (path: string) => {
     navigate(path);
   };
@@ -75,6 +76,7 @@ const WorkerProfile = () => {
                 return (
                   <ProjectCardComponent
                     onClick={(e) => {
+                      setCurrentProjectModal(project.id);
                       projectStore.ProjectModalIsOpen = true;
                     }}
                     key={project.id}

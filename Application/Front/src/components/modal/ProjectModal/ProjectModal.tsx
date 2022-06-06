@@ -6,9 +6,10 @@ import store from "../../../stores/mainStore";
 import Modal from "../modal/modal";
 import "./ProjectModal.sass";
 import Chat from "../../chat/chat";
-import { get_meetings } from "../../../utils/AxiosQueries/customerQueries";
+
 import { IProjectMeetings } from "../../../stores/projectStore";
 import Meetings from "../../ProjectModal/meetings/Meetings";
+import Info from "../../ProjectModal/info/info";
 
 export interface ProjectModalI {
   project_id: number;
@@ -139,7 +140,7 @@ const ProjectModal = ({ project_id }: ProjectModalI) => {
 
   const body = (
     <>
-      {activeButton == "info" ? info : null}
+      {activeButton == "info" ? <Info project_id={project_id} /> : null}
       {activeButton == "Checkpoints" ? checkpoints : null}
       {activeButton == "Meetings" ? <Meetings project_id={project_id} /> : null}
       {activeButton == "Telegram" ? telegram : null}

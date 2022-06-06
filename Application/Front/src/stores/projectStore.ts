@@ -17,9 +17,20 @@ export interface IProjectMeetings {
   status: string;
 }
 
+export interface ITech {
+  technology: string;
+  completeness: number;
+}
+
 export class projectStore {
+  // Profile arrays
   Projects: IProject[] = [];
   ProjectMeetings: IProjectMeetings[] = [];
+
+  // Modal Arrays
+  ModalTechnologies: ITech[] = [];
+  ModalMeetings: IProjectMeetings[] = [];
+
   CreationModalIsOpen: boolean = false;
   ProjectModalIsOpen: boolean = false;
   IsNeedToUpdate: boolean = false;
@@ -31,6 +42,18 @@ export class projectStore {
   }
   addProjectMeetings(props: IProjectMeetings) {
     this.ProjectMeetings.push(props);
+  }
+  addModalTechnology(props: ITech) {
+    var index = this.ModalTechnologies.indexOf(props, 0);
+    if (!(index > -1)) {
+      this.ModalTechnologies.push(props);
+    }
+  }
+  addModalMeeting(props: IProjectMeetings) {
+    var index = this.ModalMeetings.indexOf(props, 0);
+    if (!(index > -1)) {
+      this.ModalMeetings.push(props);
+    }
   }
 }
 

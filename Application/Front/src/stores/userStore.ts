@@ -10,6 +10,7 @@ export class UserStore {
   fullName: string = "Your fullname";
 
   in_process: boolean = false;
+  modal_in_process: boolean = false;
 
   //   Workers vars
   team_id: number | null = null;

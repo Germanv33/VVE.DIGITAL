@@ -16,11 +16,21 @@ import userStore from "../../stores/userStore";
 import { fetchToken } from "../../utils/auth";
 import store from "../../stores/mainStore";
 import { values } from "mobx";
+import { MyCreationCard } from "../ui/checkboxCreationCards/checkboxCreationCards";
 
 export interface FormData {
   name: string;
-  pages: number;
-  design: string;
+  technologies: string[];
+  team: number;
+  cost: number;
+}
+
+interface Data {
+  name: string;
+  technologies: string[];
+  team: number;
+  type: string;
+  cost: number;
 }
 
 export interface ITeam {
@@ -34,11 +44,12 @@ export default function Stepform() {
   const projectStore = store.projectStore;
   const userStore = store.userStore;
 
-  const [data, setData] = useState({
+  const [data, setData] = useState<Data>({
     name: "",
     team: 0,
-    pages: 0,
-    design: "",
+    technologies: [],
+    type: "",
+    cost: 0,
   });
 
   const [currentTeam, setcurrentTeam] = useState({
@@ -53,11 +64,7 @@ export default function Stepform() {
   const [isFound, setisFound] = useState(false);
   const [teams, setTeams] = useState<ITeam[]>([]);
 
-  async function find_dev_team(
-    cost: number,
-    technology: String[],
-    design: String
-  ) {
+  async function find_dev_team(cost: number, technology: String[]) {
     let config = {
       headers: {
         Authorization: "BEARER " + fetchToken(),
@@ -93,7 +100,12 @@ export default function Stepform() {
       });
   }
 
-  async function create_project(name: string, dev_team: number) {
+  async function create_project(
+    name: string,
+    dev_team: number,
+    technology: String[],
+    cost: number
+  ) {
     console.log("dev team number to creation:" + dev_team);
     let config = {
       headers: {
@@ -115,6 +127,8 @@ export default function Stepform() {
           customer_id: userStore.id,
           name: name,
           dev_team_id: dev_team,
+          cost: cost,
+          tecnologies: technology,
         },
         (config = config)
       )
@@ -143,15 +157,15 @@ export default function Stepform() {
   const handleNextStep = async (newData?: any, finalStep: boolean = false) => {
     setData((prev) => ({ ...prev, ...newData }));
 
-    if (finalStep && currentStep === 4) {
+    if (finalStep && currentStep === 5) {
       makeRequest(data);
-      create_project(data.name, data.team);
+      create_project(data.name, data.team, data.technologies, data.cost);
     }
 
     if (finalStep && !isFound) {
       makeRequest(data);
       setinProcess(true);
-      await find_dev_team(15000, ["shop", "profile"], data.design);
+      await find_dev_team(data.cost, data.technologies);
       console.log("teams are founded");
       console.log(teams);
     }
@@ -171,7 +185,8 @@ export default function Stepform() {
     return (
       <>
         {" "}
-        <h1>Welcome</h1>
+        <h1>Welcome to the project creation</h1>
+        <span>Tell us as much as you can about your desired project!</span>
         <button
           className="signin__button"
           onClick={() => setCurrentStep((prev) => prev + 1)}
@@ -220,7 +235,7 @@ export default function Stepform() {
                 action="submit"
                 method="post"
               >
-                <h1>Project name will be...</h1>
+                <h1>The best Project name will be...</h1>
                 <div className="input__handler">
                   <MyInput
                     value={values.name}
@@ -253,18 +268,171 @@ export default function Stepform() {
     );
   };
 
-  const two_validate = Yup.object({
-    pages: Yup.number()
-      .min(1, "Site must be at least 1 page")
-      .required("Pages are required"),
+  const onehalf_validate = Yup.object({
+    type: Yup.string().required(),
   });
 
-  const StepTwo = () => {
+  const Steponehalf = () => {
     return (
       <>
         <Formik
           initialValues={{
-            pages: data.pages,
+            type: data.type,
+          }}
+          validationSchema={onehalf_validate}
+          onSubmit={(values) => {
+            //   signin(values.password, values.email);
+            handleNextStep(values);
+            console.log(values);
+          }}
+        >
+          {(props) => {
+            const {
+              values,
+              touched,
+              errors,
+              handleBlur,
+              handleChange,
+              isSubmitting,
+              handleSubmit,
+            } = props;
+            return (
+              <form
+                id="form"
+                onSubmit={handleSubmit}
+                action="submit"
+                method="post"
+              >
+                <h1>Choose type</h1>
+                <div className="type__handler">
+                  <MyCreationCard
+                    name="Commercial"
+                    id="Commercial"
+                    title="Commercial"
+                    onChanges={(e) => {
+                      console.log(data);
+
+                      data.type = "Commercial";
+                      values.type = "Commercial";
+                      data.technologies = [];
+
+                      handleChange(e);
+                    }}
+                    onCheck={data.type == "Commercial"}
+                  />
+                  <MyCreationCard
+                    name="Informative"
+                    id="Informative"
+                    title="Informative"
+                    onChanges={(e) => {
+                      console.log(data);
+                      data.type = "Informative";
+                      values.type = "Informative";
+                      data.technologies = [];
+                      handleChange(e);
+                    }}
+                    onCheck={data.type == "Informative"}
+                  />
+                  <MyCreationCard
+                    name="Social"
+                    id="Social"
+                    title="Social"
+                    onChanges={(e) => {
+                      console.log(data);
+                      data.type = "Social";
+                      values.type = "Social";
+                      data.technologies = [];
+                      handleChange(e);
+                    }}
+                    onCheck={data.type == "Social"}
+                  />
+                  <MyCreationCard
+                    name="Web Service"
+                    id="Web Service"
+                    title="Web Service"
+                    onChanges={(e) => {
+                      console.log(data);
+                      data.type = "Web Service";
+                      values.type = "Web Service";
+                      data.technologies = [];
+                      handleChange(e);
+                    }}
+                    onCheck={data.type == "Web Service"}
+                  />
+                  <MyCreationCard
+                    name="Other"
+                    id="Other"
+                    title="Other"
+                    onChanges={(e) => {
+                      console.log(data);
+                      data.type = "Other";
+                      values.type = "Other";
+                      data.technologies = [];
+                      handleChange(e);
+                    }}
+                    onCheck={data.type == "Other"}
+                  />
+                </div>
+
+                <div className="buttons">
+                  <button
+                    className="signin__button"
+                    type="button"
+                    onClick={() => handlPrevStep(values)}
+                  >
+                    Back
+                  </button>
+
+                  <button className="signin__button" type="submit">
+                    Next
+                  </button>
+                </div>
+              </form>
+            );
+          }}
+        </Formik>
+      </>
+    );
+  };
+
+  const two_validate = Yup.object({
+    technologies: Yup.array().of(Yup.string()).required(),
+  });
+
+  const StepTwo = () => {
+    var techList: string[] = [];
+    if (data.type == "Commercial") {
+      techList = ["Shop", "Profile", "Shop filters", "Cart", "Chat"];
+    }
+    if (data.type == "Social") {
+      techList = ["News", "Profile", "Post Creation", "Comments", "Chat"];
+    }
+    if (data.type == "Informative") {
+      techList = ["News", "Profile", "Search", "Comments", "Chat"];
+    }
+    if (data.type == "Web Service") {
+      techList = ["Specialized functions"];
+    }
+    if (data.type == "Other") {
+      techList = [
+        "Search",
+        "News",
+        "Profile",
+        "Post Creation",
+        "Comments",
+        "Shop",
+        "Profile",
+        "Shop filters",
+        "Cart",
+        "Chat",
+        "Specialized functions",
+      ];
+    }
+    return (
+      <>
+        <Formik
+          initialValues={{
+            technologies: data.technologies,
           }}
           validationSchema={two_validate}
           onSubmit={(values) => {
@@ -290,26 +458,29 @@ export default function Stepform() {
                 action="submit"
                 method="post"
               >
-                <h1>How many pages will be?</h1>
-                <div className="input__handler">
-                  <MyInput
-                    value={values.pages}
-                    className={`email__input ${
-                      touched.pages && errors.pages && "is-invalid"
-                    }`}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    id="pages"
-                    inputType="number"
-                    placeholderValue={String(data.pages)}
-                    padding="0"
-                    margin={
-                      touched.pages && errors.pages ? "0px" : "0px 0px 15px 0px"
-                    }
-                  />
-                  {touched.pages && errors.pages && (
-                    <p className={"error"}> {errors.pages}</p>
-                  )}
+                <h1>Choose technologies</h1>
+                <div className="technologies__handler">
+                  {techList.map((func) => {
+                    return (
+                      <MyCreationCard
+                        key={func}
+                        name={func}
+                        id={func}
+                        title={func}
+                        onChanges={(e) => {
+                          console.log(data);
+                          var index = data.technologies.indexOf(func, 0);
+                          if (index > -1) {
+                            data.technologies.splice(index, 1);
+                          } else {
+                            data.technologies.push(func);
+                          }
+                          handleChange(e);
+                        }}
+                        onCheck={data.technologies.includes(func)}
+                      />
+                    );
+                  })}
                 </div>
 
                 <div className="buttons">
@@ -334,9 +505,9 @@ export default function Stepform() {
   };
 
   const three_validate = Yup.object({
-    design: Yup.string()
-      .min(1, "design must be at least 1 choice")
-      .required("design are required"),
+    cost: Yup.number()
+      .min(13000, "cost must be at least 13000")
+      .required("cost are required"),
   });
 
   const StepThree = () => {
@@ -344,7 +515,7 @@ export default function Stepform() {
       <>
         <Formik
           initialValues={{
-            design: data.design,
+            cost: data.cost,
           }}
           validationSchema={three_validate}
           onSubmit={(values) => {
@@ -370,27 +541,27 @@ export default function Stepform() {
                 action="submit"
                 method="post"
               >
-                <h1>Write type of design that you prefer more</h1>
+                <h1>
+                  How much does it cost to create your project in your opinion?
+                </h1>
                 <div className="input__handler">
                   <MyInput
-                    value={values.design}
+                    value={values.cost}
                     className={`email__input ${
-                      touched.design && errors.design && "is-invalid"
+                      touched.cost && errors.cost && "is-invalid"
                     }`}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    id="design"
-                    inputType="text"
-                    placeholderValue={data.design}
+                    id="cost"
+                    inputType="number"
+                    placeholderValue={String(data.cost)}
                     padding="0"
                     margin={
-                      touched.design && errors.design
-                        ? "0px"
-                        : "0px 0px 15px 0px"
+                      touched.cost && errors.cost ? "0px" : "0px 0px 15px 0px"
                     }
                   />
-                  {touched.design && errors.design && (
-                    <p className={"error"}> {errors.design}</p>
+                  {touched.cost && errors.cost && (
+                    <p className={"error"}> {errors.cost}</p>
                   )}
                 </div>
 
@@ -582,6 +753,7 @@ export default function Stepform() {
   const steps = [
     <StepZero />,
     <StepOne />,
+    <Steponehalf />,
     <StepTwo />,
     <StepThree />,
     <StepFour />,
