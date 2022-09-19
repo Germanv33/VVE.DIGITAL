@@ -1,4 +1,4 @@
-# Web Studio for People :)
+# Web Studio for People 
 
 Welcome to the vve.digital tool repository
 
